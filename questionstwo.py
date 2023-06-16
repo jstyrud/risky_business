@@ -13,12 +13,14 @@
 #             ["Q15", "radio_img", "What was the robot's task", ["artichoke", "basket","sandtimer"]]
 #     ]
     
-QUESTIONS = [
+QUESTIONS_B = [
 
     #Enjoyment
-        ["E1", "radio_text", "Using the virtual reality interface is fun.",          ["1", "2", "3", "4", "5"], ["Strongly Disagree", "Strongly Agree"] ],
-        ["E2", "radio_text", "Using the virtual reality interface is exciting.",     ["1", "2", "3", "4", "5"], ["Strongly Disagree", "Strongly Agree"] ],
-        ["E3", "radio_text", "Using the virtual reality interface is boring.",    ["1", "2", "3", "4", "5"], ["Strongly Disagree", "Strongly Agree"] ]
+        ["S2", "radio_text", "Using the virtual reality interface is fun.",          ["1", "2", "3", "4", "5"], ["Strongly Disagree", "Strongly Agree"] ],
+        ["S3", "radio_text", "Using the virtual reality interface is exciting.",     ["1", "2", "3", "4", "5"], ["Strongly Disagree", "Strongly Agree"] ],
+        ["S4", "radio_text", "Using the virtual reality interface is boring.",    ["1", "2", "3", "4", "5"], ["Strongly Disagree", "Strongly Agree"] ],
+                
+    
 ]
 
 # Unused, questions are randomized

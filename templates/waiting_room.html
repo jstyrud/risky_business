@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Well done!</h1>
+    <p>You have now finished the first part of the study. 
+        Do not close this tab as you will have to come back here for the second part of the survey when you are done with the second flight session.
+        You can now go back to the flight interface, you will be told when you are supposed to switch back to this tab to finish the rest of survey.
+    </p>
+    
+    <form action="/second_questions" method="get">
+        <button type="submit">Continue</button>
+    </form>
+{% endblock %}
