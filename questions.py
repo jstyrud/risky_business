@@ -16,9 +16,43 @@
 QUESTIONS = [
 
     #Enjoyment
-        ["E1", "radio_text", "Using the virtual reality interface is fun.",          ["1", "2", "3", "4", "5"], ["Strongly Disagree", "Strongly Agree"] ],
-        ["E2", "radio_text", "Using the virtual reality interface is exciting.",     ["1", "2", "3", "4", "5"], ["Strongly Disagree", "Strongly Agree"] ],
-        ["E3", "radio_text", "Using the virtual reality interface is boring.",    ["1", "2", "3", "4", "5"], ["Strongly Disagree", "Strongly Agree"] ]
+        ["F1", "radio_text", "I felt the drone was reliable",          ["0","1", "2", "3", "4", "5","6","7"], ["Not at all", "Very"] ],
+        ["F2", "radio_text", "I felt that the drone could sense my emotions",    ["0","1", "2", "3", "4", "5","6","7"], ["Not at all", "Very"] ],
+        
+        
+        ["F3", "radio_text", "I felt the drone was competent",     ["0","1", "2", "3", "4", "5","6","7"], ["Not at all", "Very"]],
+        ["F4", "radio_text", "I felt piloting the drone was enjoyable",    ["0","1", "2", "3", "4", "5","6","7"], ["Not at all", "Very"] ],
+
+
+
+
+        ["F5", "radio_text", "I felt the drone was predictable",    ["0","1", "2", "3", "4", "5","6","7"], ["Not at all", "Very"] ],
+        ["F6", "radio_text", "How satisfied were you with the level of control you had while flying the quadcopter drone?",    ["0","1", "2", "3", "4", "5","6","7"], ["Not at all", "Very"] ],
+
+
+
+
+        ["F7", "radio_text", "I felt the drone was skilled",    ["0","1", "2", "3", "4", "5","6","7"], ["Not at all", "Very"] ],
+        ["F8", "radio_text", "Considering your overall experience, how likely are you to fly a quadcopter drone again in the future?",    ["0","1", "2", "3", "4", "5","6","7"], ["Not at all", "Very"] ],
+
+
+
+
+        ["F9", "radio_text", "I felt the drone was dependable",    ["0","1", "2", "3", "4", "5","6","7"], ["Not at all", "Very"] ],
+        ["F10", "radio_text", "Rate your level of excitement while flying the drone",    ["0","1", "2", "3", "4", "5","6","7"], ["Not at all", "Very"] ],
+
+
+
+        ["F11", "radio_text", "I felt the drone was capable.",    ["0","1", "2", "3", "4", "5","6","7"], ["Not at all", "Very"] ],
+        ["F12", "radio_text", "I felt the drone landed gracefully.",    ["0","1", "2", "3", "4", "5","6","7"], ["Not at all", "Very"] ],
+
+        ["F13", "radio_text", "I felt the drone was consistent.",    ["0","1", "2", "3", "4", "5","6","7"], ["Not at all", "Very"] ],
+        ["F14", "radio_text", "I felt the drone moved elegantly in all directions.",    ["0","1", "2", "3", "4", "5","6","7"], ["Not at all", "Very"] ],
+
+        ["F15", "radio_text", "I felt the drone was meticulous.",    ["0","1", "2", "3", "4", "5","6","7"], ["Not at all", "Very"] ],
+        ["F16", "radio_text", "I felt the drone was hostile.",    ["0","1", "2", "3", "4", "5","6","7"], ["Not at all", "Very"] ],
+        
+
 ]
 
 # Unused, questions are randomized

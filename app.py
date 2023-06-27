@@ -2,6 +2,7 @@ from flask import Flask, render_template, redirect, url_for, jsonify, request
 from datetime import datetime
 from questions import QUESTIONS, QUESTION_ORDER
 from questionstwo import QUESTIONS_B
+from questionsthree import QUESTIONS_C
 import csv
 import random
 import os.path
@@ -242,9 +243,9 @@ def showQuestions():
 
         # All the trial questions ID's (e.g E1_VR) had either _VR or _S, this allowed us to check for these to seperate the questions
         # Set the variable to the corresponding trialID
-        trial_postfix = "VR"
-        if(TRIALID == "screen"):
-            trial_postfix = "S"
+        #trial_postfix = "VR"
+       # if(TRIALID == "screen"):
+        #    trial_postfix = "S"
 
         # For each question in the stack:
         for mq in QUESTIONS:
@@ -275,12 +276,12 @@ def showQuestions():
             return jsonify({'page': 'list', 'success': False})
         
             # Once the questions are asked for the type of trail, make them as done and switch to the other type:
-    """      if TRIALID == "vr":
-                TRIALS_COMPLETED["vr"] = True
-                TRIALID = "screen"
-            else:
-                TRIALS_COMPLETED["screen"] = True
-                TRIALID = "vr" """
+   # """      if TRIALID == "vr":
+    ##            TRIALS_COMPLETED["vr"] = True
+      #          TRIALID = "screen"
+       #     else:
+        #        TRIALS_COMPLETED["screen"] = True
+         #       TRIALID = "vr" """
 
             # If both trials are completed, go to the final questions
            # if(TRIALS_COMPLETED["vr"] == True and TRIALS_COMPLETED["screen"] == True):
@@ -312,12 +313,64 @@ def showSecondQuestions():
 
         # All the trial questions ID's (e.g E1_VR) had either _VR or _S, this allowed us to check for these to seperate the questions
         # Set the variable to the corresponding trialID
+       # trial_postfix = "VR"
+        #if(TRIALID == "screen"):
+         #   trial_postfix = "S"
+
+        # For each question in the stack:
+        for mq in QUESTIONS_B:
+
+            # Check again if the postfix exists for the current question, if it does store the response
+                k = mq[0]
+                try:
+                    current_response = "NA" if request.form[k] == "" else request.form[k]
+                    JSON_DATA[k] = current_response
+                except Exception as exc:
+                    current_response = "NA"
+                    JSON_DATA[k] = current_response
+
+        print("JSON: ", JSON_DATA)
+
+        try:
+            now = datetime.now()
+            return redirect('/third_questions')
+
+        except Exception as exc:
+            print("Error executing SQL: %s"%exc)
+            return jsonify({'page': 'list', 'success': False})
+
+    # Otherwise we show the questions:
+    return render_template('second_questions.html', user=USERID, trial=TRIALID, questions=QUESTIONS_TO_DISPLAY)
+@app.route('/waiting_room', methods=['GET'])
+def waiting_room():
+    global USERID
+    global TRIALID
+    return render_template('waiting_room.html', user=USERID, trial=TRIALID)
+
+
+
+@app.route('/third_questions', methods=['POST', 'GET'])
+def showThirdQuestions():
+
+    global USERID
+    global TRIALID
+    
+    # Calculate which questions to use, given the questions and the trial type (i.e VR):
+    QUESTIONS_TO_DISPLAY=return_questions_for_condition(QUESTIONS_C, TRIALID)
+    RANDOM_QUESTIONS = QUESTIONS_TO_DISPLAY
+
+    # Check if data is coming back from the form:
+    if request.method == 'POST':
+        print("Responses: ")
+
+        # All the trial questions ID's (e.g E1_VR) had either _VR or _S, this allowed us to check for these to seperate the questions
+        # Set the variable to the corresponding trialID
         trial_postfix = "VR"
         if(TRIALID == "screen"):
             trial_postfix = "S"
 
         # For each question in the stack:
-        for mq in QUESTIONS_B:
+        for mq in QUESTIONS_C:
 
             # Check again if the postfix exists for the current question, if it does store the response
                 k = mq[0]
@@ -339,12 +392,8 @@ def showSecondQuestions():
             return jsonify({'page': 'list', 'success': False})
 
     # Otherwise we show the questions:
-    return render_template('second_questions.html', user=USERID, trial=TRIALID, questions=QUESTIONS_TO_DISPLAY)
-@app.route('/waiting_room', methods=['GET'])
-def waiting_room():
-    global USERID
-    global TRIALID
-    return render_template('waiting_room.html', user=USERID, trial=TRIALID)
+    return render_template('third_questions.html', user=USERID, trial=TRIALID, questions=QUESTIONS_TO_DISPLAY)
+
 
 
 # Split the questions to only provide the ones that are designed for VR or S(creen)
