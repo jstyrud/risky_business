@@ -15,13 +15,14 @@
     
 QUESTIONS_B = [
 
+
     #Enjoyment
         ["S1", "radio_text", "To what extent can the drone's behavior be predicted from moment to moment?",["1", "2", "3", "4", "5","6","7"], ["Not at all predictable", "Extremely predictable"] ],
-        ["S2", "radio_text", "I felt that the drone was capable of sensing my emotions",    ["1", "2", "3", "4", "5","6","7"], ["Not at all capable", "Extremely capable"] ],
+        ["S2", "radio_text", "To what extent was the drone capable of sensing your emotions?",    ["1", "2", "3", "4", "5","6","7"], ["Not at all capable", "Extremely capable"] ],
         
         
         ["S3", "radio_text", "To what extent can you count on the drone to do its job?", ["1", "2", "3", "4", "5","6","7"], ["Not at all", "Extremely"]],
-        ["S4", "radio_text", "I felt piloting the drone was enjoyable",    ["1", "2", "3", "4", "5","6","7"], ["Not at all enjoyable", "Extremely enjoyable"] ],
+        ["S4", "radio_text", "How enjoyable did you find piloting the drone?",    ["1", "2", "3", "4", "5","6","7"], ["Not at all enjoyable", "Extremely enjoyable"] ],
 
 
 
@@ -34,7 +35,7 @@ QUESTIONS_B = [
 
         ["S7", "radio_text", "Overall how much do you trust the drone?",    ["1", "2", "3", "4", "5","6","7"], ["Not at all", "Extremely"] ],
         ["S8", "radio_text", "Considering your overall experience, how likely are you to fly a quadcopter drone again in the future?",    ["1", "2", "3", "4", "5","6","7"], ["Not at all likely", "Extremely likely"] ],
-
+        
         
 
 
