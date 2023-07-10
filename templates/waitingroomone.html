@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Well done!</h1>
+    <p> You have finished the first part of the experiment
+        Now please press continue and fill out the first part of the survey.
+    </p>
+    
+    <form action="/questions" method="get">
+        <button type="submit">Continue</button>
+    </form>
+{% endblock %}

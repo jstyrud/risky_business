@@ -177,7 +177,7 @@ def demographics():
                 current_response = "NA"
                 JSON_DATA[v] = current_response
 
-        return redirect('/questions')
+        return redirect('/legworkdone')
 
     # If the page is called, it will generate the following html file
     return render_template('demographics.html', user=USERID, trial=TRIALID)
@@ -269,7 +269,7 @@ def showQuestions():
 
             now = datetime.now()
             #return redirect('/final_opinions')
-            return redirect('/waiting_room')
+            return redirect('/firstpartdone')
         
         except Exception as exc:
             print("Error executing SQL: %s"%exc)
@@ -341,6 +341,21 @@ def showSecondQuestions():
 
     # Otherwise we show the questions:
     return render_template('second_questions.html', user=USERID, trial=TRIALID, questions=QUESTIONS_TO_DISPLAY)
+@app.route('/legworkdone', methods=['GET'])
+def legworkdone():
+    global USERID
+    global TRIALID
+    return render_template('legworkdone.html', user=USERID, trial=TRIALID)
+@app.route('/waitingroomone', methods=['GET'])
+def firstwaitingroom():
+    global USERID
+    global TRIALID
+    return render_template('waitingroomone.html', user=USERID, trial=TRIALID)
+@app.route('/firstpartdone', methods=['GET'])
+def firstpartdone():
+    global USERID
+    global TRIALID
+    return render_template('firstpartdone.html', user=USERID, trial=TRIALID)
 @app.route('/waiting_room', methods=['GET'])
 def waiting_room():
     global USERID

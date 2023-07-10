@@ -16,42 +16,24 @@
 QUESTIONS_B = [
 
     #Enjoyment
-        ["S1", "radio_text", "I felt the drone was reliable",          ["0","1", "2", "3", "4", "5","6","7"], ["Not at all", "Very"] ],
-        ["S2", "radio_text", "I felt that the drone could sense my emotions",    ["0","1", "2", "3", "4", "5","6","7"], ["Not at all", "Very"] ],
+        ["S1", "radio_text", "To what extent can the drone's behavior be predicted from moment to moment?",["1", "2", "3", "4", "5","6","7"], ["Not at all", "Very"] ],
+        ["S2", "radio_text", "I felt that the drone was capable of sensing my emotions",    ["1", "2", "3", "4", "5","6","7"], ["Not at all", "Very capable"] ],
         
         
-        ["S3", "radio_text", "I felt the drone was competent",     ["0","1", "2", "3", "4", "5","6","7"], ["Not at all", "Very"]],
-        ["S4", "radio_text", "I felt piloting the drone was enjoyable",    ["0","1", "2", "3", "4", "5","6","7"], ["Not at all", "Very"] ],
+        ["S3", "radio_text", "To what extent can you count on the drone to do its job?", ["1", "2", "3", "4", "5","6","7"], ["Not at all", "Very"]],
+        ["S4", "radio_text", "I felt piloting the drone was enjoyable",    ["1", "2", "3", "4", "5","6","7"], ["Not at all", "Very enjoyable"] ],
 
 
 
 
-        ["S5", "radio_text", "I felt the drone was predictable",    ["0","1", "2", "3", "4", "5","6","7"], ["Not at all", "Very"] ],
-        ["S6", "radio_text", "How satisfied were you with the level of control you had while flying the quadcopter drone?",    ["0","1", "2", "3", "4", "5","6","7"], ["Not at all", "Very"] ],
+        ["S5", "radio_text", "What degree of faith do you have that the drone will be able to cope with similar situations in the future?",    ["1", "2", "3", "4", "5","6","7"], ["Not faith at all", "Complete faith"] ],
+        ["S6", "radio_text", "How satisfied were you with the level of control you had while flying the quadcopter drone?",    ["1", "2", "3", "4", "5","6","7"], ["Not at all", "Very satisfied"] ],
 
 
 
 
-        ["S7", "radio_text", "I felt the drone was skilled",    ["0","1", "2", "3", "4", "5","6","7"], ["Not at all", "Very"] ],
-        ["S8", "radio_text", "Considering your overall experience, how likely are you to fly a quadcopter drone again in the future?",    ["0","1", "2", "3", "4", "5","6","7"], ["Not at all", "Very"] ],
-
-
-
-
-        ["S9", "radio_text", "I felt the drone was dependable",    ["0","1", "2", "3", "4", "5","6","7"], ["Not at all", "Very"] ],
-        ["S10", "radio_text", "Rate your level of excitement while flying the drone",    ["0","1", "2", "3", "4", "5","6","7"], ["Not at all", "Very"] ],
-
-
-
-        ["S11", "radio_text", "I felt the drone was capable.",    ["0","1", "2", "3", "4", "5","6","7"], ["Not at all", "Very"] ],
-        ["S12", "radio_text", "I felt the drone landed gracefully.",    ["0","1", "2", "3", "4", "5","6","7"], ["Not at all", "Very"] ],
-
-        ["S13", "radio_text", "I felt the drone was consistent.",    ["0","1", "2", "3", "4", "5","6","7"], ["Not at all", "Very"] ],
-        ["S14", "radio_text", "I felt the drone moved elegantly in all directions.",    ["0","1", "2", "3", "4", "5","6","7"], ["Not at all", "Very"] ],
-
-        ["S15", "radio_text", "I felt the drone was meticulous.",    ["0","1", "2", "3", "4", "5","6","7"], ["Not at all", "Very"] ],
-        ["S16", "radio_text", "I felt the drone was hostile.",    ["0","1", "2", "3", "4", "5","6","7"], ["Not at all", "Very"] ],
-
+        ["S7", "radio_text", "Overall how much do you trust the drone?",    ["1", "2", "3", "4", "5","6","7"], ["Not at all", "Very much"] ],
+        ["S8", "radio_text", "Considering your overall experience, how likely are you to fly a quadcopter drone again in the future?",    ["1", "2", "3", "4", "5","6","7"], ["Not at all", "Very likely"] ],
 
         
 
