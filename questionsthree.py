@@ -17,12 +17,12 @@ QUESTIONS_C = [
 
     #RISK
      
-        ["R1", "radio_text", "I do not feel comfortable about taking chances.",     ["0","1", "2", "3", "4", "5","6","7"], ["Not at all", "Very"]],
-        ["R2", "radio_text", "I prefer situations that have foreseeable outcomes",    ["0","1", "2", "3", "4", "5","6","7"], ["Not at all", "Very"] ],
-        ["R3", "radio_text", "Before I make a decision, I like to be absolutely sure how things will turn out.",    ["0","1", "2", "3", "4", "5","6","7"], ["Not at all", "Very"] ],
-        ["R4", "radio_text", "I avoid situations that have uncertain outcomes.",    ["0","1", "2", "3", "4", "5","6","7"], ["Not at all", "Very"] ],
-        ["R5", "radio_text", "I feel comfortable improvising in new situations.",    ["0","1", "2", "3", "4", "5","6","7"], ["Not at all", "Very"] ],
-        ["R6", "radio_text", " I feel nervous when I have to make decisions in uncertain situations.",    ["0","1", "2", "3", "4", "5","6","7"], ["Not at all", "Very"] ],
+        ["R1", "radio_text", "I do not feel comfortable about taking chances.",     ["1", "2", "3", "4", "5","6","7"], ["Strongly Disagree", "Strongly Agree"]],
+        ["R2", "radio_text", "I prefer situations that have foreseeable outcomes",    ["1", "2", "3", "4", "5","6","7"], ["Strongly Disagree", "Strongly Agree"] ],
+        ["R3", "radio_text", "Before I make a decision, I like to be absolutely sure how things will turn out.",    ["1", "2", "3", "4", "5","6","7"], ["Strongly Disagree", "Strongly Agree"] ],
+        ["R4", "radio_text", "I avoid situations that have uncertain outcomes.",    ["1", "2", "3", "4", "5","6","7"], ["Strongly Disagree", "Strongly Agree"] ],
+        ["R5", "radio_text", "I feel comfortable improvising in new situations.",    ["1", "2", "3", "4", "5","6","7"], ["Strongly Disagree", "Strongly Agree"] ],
+        ["R6", "radio_text", " I feel nervous when I have to make decisions in uncertain situations.",    ["1", "2", "3", "4", "5","6","7"], ["Strongly Disagree", "Strongly Agree"] ],
 
         
 
