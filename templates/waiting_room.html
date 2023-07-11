@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
+<div class="main">
     <h1>Well done!</h1>
     <p> You have finished the study.
         Now please press continue and fill out the rest of the survey.
@@ -9,4 +11,5 @@
     <form action="/questions" method="get">
         <button type="submit">Continue</button>
     </form>
+</div>
 {% endblock %}
