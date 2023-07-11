@@ -1,2 +1,2 @@
-ParticipantID,age,gender,fam_vam,oft_vam,exp_vam,F1,F2,F3,F4,F5,F6,F7,F8,S1,S2,S3,S4,S5,S6,S7,S8,R1,R2,R3,R4,R5,R6,final_feedback
-2,32,Male,4,3,4,6,4,6,5,6,4,5,7,2,3,2,6,2,2,2,7,5,5,4,3,6,4,NA
+ParticipantID,TrialID,age,gender,fam_vam,oft_vam,exp_vam,T1_F,T2_F,T3_F,T4_F,T5_F,T6_F,T7_F,T8_F,T1_NF,T2_NF,T3_NF,T4_NF,T5_NF,T6_NF,T7_NF,T8_NF,R1,R2,R3,R4,R5,R6,final_feedback
+23,failure,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA

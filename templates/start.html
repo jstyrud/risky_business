@@ -8,8 +8,15 @@
         <form method="post">
             <h1>Participant ID: </h1>
             <input type="number" id="paricipantID" name="paricipantID" min="0" max="999"  ><br>
+            <h1>Trial ID: </h1>
 
-            
+            <select name="trialID" id="trialID" required >
+                <optgroup>
+                <option value="" disabled selected>Select condition</option>
+                <option value="failure">Failure first</option>
+                <option value="flawless">No failure first</option>
+            </optgroup>
+              </select>
             <!-- <input type="text" id="trialID" name="trialID"><br> -->
             <div class="center_align">
                 <button type="submit">Submit</button>

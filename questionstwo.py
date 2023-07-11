@@ -17,25 +17,43 @@ QUESTIONS_B = [
 
 
     #Enjoyment
-        ["S1", "radio_text", "To what extent can the drone's behavior be predicted from moment to moment?",["1", "2", "3", "4", "5","6","7"], ["Not at all predictable", "Extremely predictable"] ],
-        ["S2", "radio_text", "To what extent was the drone capable of sensing your emotions?",    ["1", "2", "3", "4", "5","6","7"], ["Not at all capable", "Extremely capable"] ],
+        ["T_F", "radio_text", "To what extent can the drone's behavior be predicted from moment to moment?",["1", "2", "3", "4", "5","6","7"], ["Not at all predictable", "Extremely predictable"] ],
+        ["T_F", "radio_text", "To what extent was the drone capable of sensing your emotions?",    ["1", "2", "3", "4", "5","6","7"], ["Not at all capable", "Extremely capable"] ],
         
         
-        ["S3", "radio_text", "To what extent can you count on the drone to do its job?", ["1", "2", "3", "4", "5","6","7"], ["Not at all", "Extremely"]],
-        ["S4", "radio_text", "How enjoyable did you find piloting the drone?",    ["1", "2", "3", "4", "5","6","7"], ["Not at all enjoyable", "Extremely enjoyable"] ],
+        ["T_F", "radio_text", "To what extent can you count on the drone to do its job?", ["1", "2", "3", "4", "5","6","7"], ["Not at all", "Extremely"]],
+        ["T_F", "radio_text", "How enjoyable did you find piloting the drone?",    ["1", "2", "3", "4", "5","6","7"], ["Not at all enjoyable", "Extremely enjoyable"] ],
 
 
 
 
-        ["S5", "radio_text", "What degree of faith do you have that the drone will be able to cope with similar situations in the future?",    ["1", "2", "3", "4", "5","6","7"], ["No faith at all", "Complete faith"] ],
-        ["S6", "radio_text", "How satisfied were you with the level of control you had while flying the quadcopter drone?",    ["1", "2", "3", "4", "5","6","7"], ["Not at all satisfied", "Extremely satisfied"] ],
+        ["T_F", "radio_text", "What degree of faith do you have that the drone will be able to cope with similar situations in the future?",    ["1", "2", "3", "4", "5","6","7"], ["No faith at all", "Complete faith"] ],
+        ["T_F", "radio_text", "How satisfied were you with the level of control you had while flying the quadcopter drone?",    ["1", "2", "3", "4", "5","6","7"], ["Not at all satisfied", "Extremely satisfied"] ],
 
 
 
 
-        ["S7", "radio_text", "Overall how much do you trust the drone?",    ["1", "2", "3", "4", "5","6","7"], ["Not at all", "Extremely"] ],
-        ["S8", "radio_text", "Considering your overall experience, how likely are you to fly a quadcopter drone again in the future?",    ["1", "2", "3", "4", "5","6","7"], ["Not at all likely", "Extremely likely"] ],
+        ["T_F", "radio_text", "Overall how much do you trust the drone?",    ["1", "2", "3", "4", "5","6","7"], ["Not at all", "Extremely"] ],
+        ["T_F", "radio_text", "Considering your overall experience, how likely are you to fly a quadcopter drone again in the future?",    ["1", "2", "3", "4", "5","6","7"], ["Not at all likely", "Extremely likely"] ],
         
+        ["T_NF", "radio_text", "To what extent can the drone's behavior be predicted from moment to moment?",["1", "2", "3", "4", "5","6","7"], ["Not at all predictable", "Extremely predictable"] ],
+        ["T_NF", "radio_text", "To what extent was the drone capable of sensing your emotions?",    ["1", "2", "3", "4", "5","6","7"], ["Not at all capable", "Extremely capable"] ],
+        
+        
+        ["T_NF", "radio_text", "To what extent can you count on the drone to do its job?", ["1", "2", "3", "4", "5","6","7"], ["Not at all", "Extremely"]],
+        ["T_NF", "radio_text", "How enjoyable did you find piloting the drone?",    ["1", "2", "3", "4", "5","6","7"], ["Not at all enjoyable", "Extremely enjoyable"] ],
+
+
+
+
+        ["T_NF", "radio_text", "What degree of faith do you have that the drone will be able to cope with similar situations in the future?",    ["1", "2", "3", "4", "5","6","7"], ["No faith at all", "Complete faith"] ],
+        ["T_NF", "radio_text", "How satisfied were you with the level of control you had while flying the quadcopter drone?",    ["1", "2", "3", "4", "5","6","7"], ["Not at all satisfied", "Extremely satisfied"] ],
+
+
+
+
+        ["T_NF", "radio_text", "Overall how much do you trust the drone?",    ["1", "2", "3", "4", "5","6","7"], ["Not at all", "Extremely"] ],
+        ["T_NF", "radio_text", "Considering your overall experience, how likely are you to fly a quadcopter drone again in the future?",    ["1", "2", "3", "4", "5","6","7"], ["Not at all likely", "Extremely likely"] ],
         
 
 

@@ -1,7 +1,6 @@
 from flask import Flask, render_template, redirect, url_for, jsonify, request
 from datetime import datetime
 from questions import QUESTIONS, QUESTION_ORDER
-from questionstwo import QUESTIONS_B
 from questionsthree import QUESTIONS_C
 import csv
 import random
@@ -13,8 +12,8 @@ app = Flask(__name__)
 USERID = -1
 TRIALID = ""
 TRIAL_COUNTER = 0
-TRIAL_TYPE = "vr"
-TRIALS_COMPLETED = {"vr": False, "screen": False}
+TRIAL_TYPE = "failure"
+TRIALS_COMPLETED = {"failure": False, "flawless": False}
 
 ### CSV Filename:
 CSV_FILENAME = 'survey_results.csv'
@@ -63,20 +62,20 @@ def home():
 
     # This clears the global variables whenever anyone goes to the home page - this might not be what you want, if multiple people will be using this at once for e.g
     JSON_DATA = {}
-    TRIALS_COMPLETED["vr"] = TRIALS_COMPLETED["screen"] = False
+    TRIALS_COMPLETED["failure"] = TRIALS_COMPLETED["flawless"] = False
 
     # When the data is returned to the page, i.e submit is sent:
     if request.method == 'POST':
         try:
             # Store the user variables:
             USERID = int(request.form['paricipantID'])
-            #TRIALID = request.form['trialID']
+            TRIALID = request.form['trialID']
 
             print(USERID, TRIALID)
 
             # Store it in the JSON_DATA 
             JSON_DATA["ParticipantID"] = USERID
-            #JSON_DATA["TrialID"] = TRIALID
+            JSON_DATA["TrialID"] = TRIALID
 
             #Once the page has been submitted, it moves on to the next page - i.e consent (look for route below.)
             return redirect('/consent')
@@ -183,6 +182,32 @@ def demographics():
     return render_template('demographics.html', user=USERID, trial=TRIALID)
 
 ## position ##############
+@app.route('/position', methods=['POST', 'GET'])
+def position():
+
+    global USERID
+    global TRIALID
+    global JSON_DATA
+
+    # When the data is returned to the page, i.e submit is sent:
+    if request.method == 'POST':
+     
+        print(request.form)
+        for v in request.form:
+            # JSON_DATA[v] = request.form[v]
+            print(v, request.form[v])
+            try:
+                current_response = "NA" if request.form[v] == "" else request.form[v]
+                JSON_DATA[v] = current_response
+            except Exception as exc:
+                current_response = "NA"
+                JSON_DATA[v] = current_response
+
+        return redirect('/questions')
+
+    # If the page is called, it will generate the following html file
+    return render_template('position.html', user=USERID, trial=TRIALID)
+
 
 ## Bell ####################
 @app.route('/bell', methods=['POST', 'GET'])
@@ -235,7 +260,7 @@ def showQuestions():
     RANDOM_QUESTIONS = QUESTIONS_TO_DISPLAY
 
     # Randomize the questions:
-  #  random.shuffle(RANDOM_QUESTIONS)
+    random.shuffle(RANDOM_QUESTIONS)
 
     # Check if data is coming back from the form:
     if request.method == 'POST':
@@ -243,14 +268,15 @@ def showQuestions():
 
         # All the trial questions ID's (e.g E1_VR) had either _VR or _S, this allowed us to check for these to seperate the questions
         # Set the variable to the corresponding trialID
-        #trial_postfix = "VR"
-       # if(TRIALID == "screen"):
-        #    trial_postfix = "S"
+        trial_postfix = "F"
+        if(TRIALID == "flawless"):
+            trial_postfix = "NF"
 
         # For each question in the stack:
         for mq in QUESTIONS:
 
             # Check again if the postfix exists for the current question, if it does store the response
+            if(trial_postfix in mq[0]):
                 k = mq[0]
                 try:
                     current_response = "NA" if request.form[k] == "" else request.form[k]
@@ -264,125 +290,44 @@ def showQuestions():
         # print("CSV: ", USERID, TRIALID, response_csv)
 
         try:
-            
-
 
             now = datetime.now()
-            #return redirect('/final_opinions')
-            return redirect('/firstpartdone')
-        
+            # Once the questions are asked for the type of trail, make them as done and switch to the other type:
+            if TRIALID == "failure":
+                TRIALS_COMPLETED["failure"] = True
+                TRIALID = "flawless"
+            else:
+                TRIALS_COMPLETED["flawless"] = True
+                TRIALID = "failure"
+
+            # If both trials are completed, go to the final questions
+            if(TRIALS_COMPLETED["failure"] == True and TRIALS_COMPLETED["flawless"] == True):
+                return redirect('/third_set_of_questions')
+
+            # Once they have completed, go to the bell page to wait until the next task is completed
+            return render_template('bell.html', user=USERID, trial=TRIALID)
         except Exception as exc:
             print("Error executing SQL: %s"%exc)
             return jsonify({'page': 'list', 'success': False})
-        
-            # Once the questions are asked for the type of trail, make them as done and switch to the other type:
-   # """      if TRIALID == "vr":
-    ##            TRIALS_COMPLETED["vr"] = True
-      #          TRIALID = "screen"
-       #     else:
-        #        TRIALS_COMPLETED["screen"] = True
-         #       TRIALID = "vr" """
-
-            # If both trials are completed, go to the final questions
-           # if(TRIALS_COMPLETED["vr"] == True and TRIALS_COMPLETED["screen"] == True):
-           # return redirect('/final_opinions')
-
-            # Once they have completed, go to the bell page to wait until the next task is completed
-          #  return render_template('bell.html', user=USERID, trial=TRIALID)
-          # except Exception as exc:
-           # print("Error executing SQL: %s"%exc)
-           # return jsonify({'page': 'list', 'success': False})
             
     # Otherwise we show the questions:
     return render_template('index.html', user=USERID, trial=TRIALID, questions=QUESTIONS_TO_DISPLAY)
 
-## Second Questions Page ####################
-@app.route('/second_questions', methods=['POST', 'GET'])
-def showSecondQuestions():
+
+
+@app.route('/third_set_of_questions', methods=['POST', 'GET'])
+def showThirdSetOfQuestions():
 
     global USERID
     global TRIALID
     
     # Calculate which questions to use, given the questions and the trial type (i.e VR):
-    QUESTIONS_TO_DISPLAY=return_questions_for_condition(QUESTIONS_B, TRIALID)
-    RANDOM_QUESTIONS = QUESTIONS_TO_DISPLAY
+    QUESTIONS_TO_DISPLAY=return_questions_for_risk_aversion(QUESTIONS_C, TRIALID)
+    random.shuffle(QUESTIONS_TO_DISPLAY)
 
     # Check if data is coming back from the form:
     if request.method == 'POST':
         print("Responses: ")
-
-        # All the trial questions ID's (e.g E1_VR) had either _VR or _S, this allowed us to check for these to seperate the questions
-        # Set the variable to the corresponding trialID
-       # trial_postfix = "VR"
-        #if(TRIALID == "screen"):
-         #   trial_postfix = "S"
-
-        # For each question in the stack:
-        for mq in QUESTIONS_B:
-
-            # Check again if the postfix exists for the current question, if it does store the response
-                k = mq[0]
-                try:
-                    current_response = "NA" if request.form[k] == "" else request.form[k]
-                    JSON_DATA[k] = current_response
-                except Exception as exc:
-                    current_response = "NA"
-                    JSON_DATA[k] = current_response
-
-        print("JSON: ", JSON_DATA)
-
-        try:
-            now = datetime.now()
-            return redirect('/third_questions')
-
-        except Exception as exc:
-            print("Error executing SQL: %s"%exc)
-            return jsonify({'page': 'list', 'success': False})
-
-    # Otherwise we show the questions:
-    return render_template('second_questions.html', user=USERID, trial=TRIALID, questions=QUESTIONS_TO_DISPLAY)
-@app.route('/legworkdone', methods=['GET'])
-def legworkdone():
-    global USERID
-    global TRIALID
-    return render_template('legworkdone.html', user=USERID, trial=TRIALID)
-@app.route('/waitingroomone', methods=['GET'])
-def firstwaitingroom():
-    global USERID
-    global TRIALID
-    return render_template('waitingroomone.html', user=USERID, trial=TRIALID)
-@app.route('/firstpartdone', methods=['GET'])
-def firstpartdone():
-    global USERID
-    global TRIALID
-    return render_template('firstpartdone.html', user=USERID, trial=TRIALID)
-@app.route('/waiting_room', methods=['GET'])
-def waiting_room():
-    global USERID
-    global TRIALID
-    return render_template('waiting_room.html', user=USERID, trial=TRIALID)
-
-
-
-@app.route('/third_questions', methods=['POST', 'GET'])
-def showThirdQuestions():
-
-    global USERID
-    global TRIALID
-    
-    # Calculate which questions to use, given the questions and the trial type (i.e VR):
-    QUESTIONS_TO_DISPLAY=return_questions_for_condition(QUESTIONS_C, TRIALID)
-    RANDOM_QUESTIONS = QUESTIONS_TO_DISPLAY
-
-    # Check if data is coming back from the form:
-    if request.method == 'POST':
-        print("Responses: ")
-
-        # All the trial questions ID's (e.g E1_VR) had either _VR or _S, this allowed us to check for these to seperate the questions
-        # Set the variable to the corresponding trialID
-        trial_postfix = "VR"
-        if(TRIALID == "screen"):
-            trial_postfix = "S"
 
         # For each question in the stack:
         for mq in QUESTIONS_C:
@@ -411,6 +356,7 @@ def showThirdQuestions():
 
 
 
+
 # Split the questions to only provide the ones that are designed for VR or S(creen)
 # Returns a list of questions, that are marked with the trialID
 def return_questions_for_condition(questions, condition):
@@ -418,13 +364,48 @@ def return_questions_for_condition(questions, condition):
     questions_to_display = []
     
     for q in questions:
-       """  if "vr" in condition and "_VR" in q[0]:
+        print(str(condition))
+        print(str(q))
+        if "failure" in condition and "_F" in q[0]:
             questions_to_display.append(q)
-        elif "screen" in condition and "_S" in q[0]: """
+        elif "flawless" in condition and "_NF" in q[0]:
+            questions_to_display.append(q)
+    
+    print("Questions calculatd", questions_to_display)
+    return questions_to_display
+
+def return_questions_for_risk_aversion(questions, condition):
+    
+    questions_to_display = []
+    
+    for q in questions:
        questions_to_display.append(q)
     
     print("Questions calculatd", questions_to_display)
     return questions_to_display
+
+
+@app.route('/legworkdone', methods=['GET'])
+def legworkdone():
+    global USERID
+    global TRIALID
+    return render_template('legworkdone.html', user=USERID, trial=TRIALID)
+@app.route('/waitingroomone', methods=['GET'])
+def firstwaitingroom():
+    global USERID
+    global TRIALID
+    return render_template('waitingroomone.html', user=USERID, trial=TRIALID)
+@app.route('/firstpartdone', methods=['GET'])
+def firstpartdone():
+    global USERID
+    global TRIALID
+    return render_template('firstpartdone.html', user=USERID, trial=TRIALID)
+@app.route('/waiting_room', methods=['GET'])
+def waiting_room():
+    global USERID
+    global TRIALID
+    return render_template('waiting_room.html', user=USERID, trial=TRIALID)
+
 
 if __name__ == "__main__":
     # write_headers()
