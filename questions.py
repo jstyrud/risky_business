@@ -37,28 +37,30 @@ QUESTIONS = [
 
 
         ["T7_F", "radio_text", "Overall, I trust the drone",    ["1", "2", "3", "4", "5","6","7"], ["Strongly Disagree", "Strongly Agree"] ],
-        ["T8_F", "radio_text", "I would be willing to fly this drone again in the future?",    ["1", "2", "3", "4", "5","6","7"], ["Strongly Disagree", "Strongly Agree"] ],
+        ["T8_F", "radio_text", "I would be willing to fly this drone again in the future",    ["1", "2", "3", "4", "5","6","7"], ["Strongly Disagree", "Strongly Agree"] ],
+        ["T9_F", "radio_text", "The drone's behaviour was reliable",    ["1", "2", "3", "4", "5","6","7"], ["Strongly Disagree", "Strongly Agree"] ],
 
-The drones behaviour was relaible
-    
-        ["T1_NF", "radio_text", "To what extent could the drone's behavior be predicted from moment to moment?",["1", "2", "3", "4", "5","6","7"], ["Not at all predictable", "Extremely predictable"] ],
-        ["T2_NF", "radio_text", "To what extent was the drone capable of sensing your emotions?",    ["1", "2", "3", "4", "5","6","7"], ["Not at all capable", "Extremely capable"] ],
+
+        ["T1_NF", "radio_text", "The drone’s behaviour was predictable",["1", "2", "3", "4", "5","6","7"], ["Strongly Disagree", "Strongly Agree"] ],
+        ["T2_NF", "radio_text", "The drone was capable of sensing my emotions",    ["1", "2", "3", "4", "5","6","7"], ["Strongly Disagree", "Strongly Agree"] ],
         
         
-        ["T3_NF", "radio_text", "To what extent could you count on the drone to do its job?", ["1", "2", "3", "4", "5","6","7"], ["Not at all", "Extremely"]],
-        ["T4_NF", "radio_text", "How enjoyable did you find piloting the drone?",    ["1", "2", "3", "4", "5","6","7"], ["Not at all enjoyable", "Extremely enjoyable"] ],
+        ["T3_NF", "radio_text", "I could count on the drone to do its job", ["1", "2", "3", "4", "5","6","7"], ["Strongly Disagree", "Strongly Agree"]],
+        ["T4_NF", "radio_text", "Piloting the drone was enjoyable",    ["1", "2", "3", "4", "5","6","7"], ["Strongly Disagree", "Strongly Agree"] ],
 
 
 
 
-        ["T5_NF", "radio_text", "What degree of faith do you have that the drone will be able to cope with similar situations in the future?",    ["1", "2", "3", "4", "5","6","7"], ["No faith at all", "Complete faith"] ],
-        ["T6_NF", "radio_text", "How satisfied were you with the level of control you had while flying the quadcopter drone?",    ["1", "2", "3", "4", "5","6","7"], ["Not at all satisfied", "Extremely satisfied"] ],
+        ["T5_NF", "radio_text", "The drone would be able to cope with similar tasks in the future",    ["1", "2", "3", "4", "5","6","7"], ["Strongly Disagree", "Strongly Agree"] ],
+        ["T6_NF", "radio_text", "I was satisfied with the level of control I had whilst piloting the drone",    ["1", "2", "3", "4", "5","6","7"], ["Strongly Disagree", "Strongly Agree"] ],
 
 
 
 
-        ["T7_NF", "radio_text", "Overall how much do you trust the drone?",    ["1", "2", "3", "4", "5","6","7"], ["Not at all", "Extremely"] ],
-        ["T8_NF", "radio_text", "How willing would you be you to fly this drone again in the future?",    ["1", "2", "3", "4", "5","6","7"], ["Not at all willing", "Extremely willing"] ],
+        ["T7_NF", "radio_text", "Overall, I trust the drone",    ["1", "2", "3", "4", "5","6","7"], ["Strongly Disagree", "Strongly Agree"] ],
+        ["T8_NF", "radio_text", "I would be willing to fly this drone again in the future",    ["1", "2", "3", "4", "5","6","7"], ["Strongly Disagree", "Strongly Agree"] ],
+        ["T9_NF", "radio_text", "The drone's behaviour was reliable",    ["1", "2", "3", "4", "5","6","7"], ["Strongly Disagree", "Strongly Agree"] ],
+
     
 ]
 
