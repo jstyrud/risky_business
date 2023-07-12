@@ -302,7 +302,7 @@ def showQuestions():
 
             # If both trials are completed, go to the final questions
             if(TRIALS_COMPLETED["failure"] == True and TRIALS_COMPLETED["flawless"] == True):
-                return redirect('/third_set_of_questions')
+                return redirect('/almostdone')
 
             # Once they have completed, go to the bell page to wait until the next task is completed
             return render_template('bell.html', user=USERID, trial=TRIALID)
@@ -395,6 +395,11 @@ def firstwaitingroom():
     global USERID
     global TRIALID
     return render_template('waitingroomone.html', user=USERID, trial=TRIALID)
+@app.route('/almostdone', methods=['GET'])
+def almostdone():
+    global USERID
+    global TRIALID
+    return render_template('almostdone.html', user=USERID, trial=TRIALID)
 @app.route('/firstpartdone', methods=['GET'])
 def firstpartdone():
     global USERID
