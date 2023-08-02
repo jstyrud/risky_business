@@ -23,6 +23,23 @@ JSON_DATA = {}
 CONSENT_FILENAME = 'participants.csv'
 
 
+def refine_non_failure_data(original_dict):
+    new_dict = {}
+
+    for key, value in original_dict.items():
+        if key.endswith('_F'):
+            corresponding_key = key[:-1] + 'NF'
+            new_value = original_dict[corresponding_key]
+        elif key.endswith('_NF'):
+            corresponding_key = key[:-2] + 'F'
+            new_value = original_dict[corresponding_key]
+        else:
+            new_value = value
+
+        new_dict[key] = new_value
+
+    return new_dict
+
 ### This function will add the headers, based on the variables below, and the questions (stored in questions.py)
 def write_headers():
 
@@ -92,6 +109,9 @@ def final_opinions():
 
     global USERID
     global TRIALID
+    global JSON_DATA
+
+
 
     # When the data is returned to the page, i.e submit is sent:
     if request.method == 'POST':
@@ -225,11 +245,20 @@ def fin():
 
     global USERID
     global TRIALID
+    global JSON_DATA
 
     file_exists = os.path.isfile(CSV_FILENAME)
 
+    if TRIALID == 'flawless':
+                NON_FAILURE_DATA = refine_non_failure_data(JSON_DATA)
+                JSON_DATA = NON_FAILURE_DATA
+
+
+    print("HERE IS THE JSON_DATA  " +str(JSON_DATA))
+
     with open(CSV_FILENAME, 'a') as f:
         # f.write(s + "\n")
+        
         w = csv.DictWriter(f, JSON_DATA.keys())
         if not file_exists:
             w.writeheader()  # file doesn't exist yet, write a header
@@ -256,6 +285,7 @@ def showQuestions():
     global TRIALID
     
     # Calculate which questions to use, given the questions and the trial type (i.e VR):
+    print("here we go   "+ TRIALID)
     QUESTIONS_TO_DISPLAY=return_questions_for_condition(QUESTIONS, TRIALID)
     RANDOM_QUESTIONS = QUESTIONS_TO_DISPLAY
 
@@ -268,9 +298,16 @@ def showQuestions():
 
         # All the trial questions ID's (e.g E1_VR) had either _VR or _S, this allowed us to check for these to seperate the questions
         # Set the variable to the corresponding trialID
-        trial_postfix = "F"
+        trial_postfix = ""
         if(TRIALID == "flawless"):
-            trial_postfix = "NF"
+            trial_postfix = "_NF"
+        if(TRIALID == "failure"):
+            trial_postfix = "_F"
+        
+
+
+        print('postfix' + trial_postfix)
+            
 
         # For each question in the stack:
         for mq in QUESTIONS:
@@ -278,8 +315,10 @@ def showQuestions():
             # Check again if the postfix exists for the current question, if it does store the response
             if(trial_postfix in mq[0]):
                 k = mq[0]
+                print("question " + k)
                 try:
                     current_response = "NA" if request.form[k] == "" else request.form[k]
+                    print("req form: "+ request.form[k])
                     JSON_DATA[k] = current_response
                 except Exception as exc:
                     current_response = "NA"
@@ -290,18 +329,20 @@ def showQuestions():
         # print("CSV: ", USERID, TRIALID, response_csv)
 
         try:
-
             now = datetime.now()
             # Once the questions are asked for the type of trail, make them as done and switch to the other type:
             if TRIALID == "failure":
                 TRIALS_COMPLETED["failure"] = True
                 TRIALID = "flawless"
             else:
+                print("checkpoint 6")
                 TRIALS_COMPLETED["flawless"] = True
                 TRIALID = "failure"
 
             # If both trials are completed, go to the final questions
             if(TRIALS_COMPLETED["failure"] == True and TRIALS_COMPLETED["flawless"] == True):
+                
+
                 return redirect('/almostdone')
 
             # Once they have completed, go to the bell page to wait until the next task is completed

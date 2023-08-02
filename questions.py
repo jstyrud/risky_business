@@ -16,10 +16,6 @@
 QUESTIONS = [
 
     #TRUST
-
-
-
-    
         ["T1_F", "radio_text", "The drone’s behaviour was predictable",["1", "2", "3", "4", "5","6","7"], ["Strongly Disagree", "Strongly Agree"] ],
         ["T2_F", "radio_text", "The drone was capable of sensing my emotions",    ["1", "2", "3", "4", "5","6","7"], ["Strongly Disagree", "Strongly Agree"] ],
         
