@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{% block title %}  {% endblock %}</h1>
+    <div class='message'>
+
+
+    <h3></h3>
+        <form method="post">
+
+            
+            <div class="radio_text">
+                <h2>Any other thoughts or feedback? </h2>
+                <input type="text" name="final_feedback" width="70%" height="30" autocomplete="off" placeholder="Type here"></input>
+    
+            </div>
+            <div class="center_align">
+                <button type="submit">Submit</button>
+            </div>
+        </form> 
+
+    </div>
+{% endblock %}

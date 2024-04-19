@@ -14,7 +14,7 @@
             --primary-shadow: #000000;
 
             --secondary-header: #40a431;
-            --secondary-bg: #f3f3f3;
+            --secondary-bg: #eeeeee;
             --secondary-text: #000000;
             --secondary-highlight: #709972;
             --secondary-shadow: #929292;
@@ -43,21 +43,25 @@
             background-color: var(--secondary-header);
             border: none;
             color: white;
-            padding: 15px 32px;
+            padding: 35px 32px;
+            margin: 20px;
             text-align: center;
             text-decoration: none;
             display: inline-block;
-            font-size: 32px;
-            margin-left: 45%;
-            margin-right: auto;
+            font-size: 42px;
+            /* margin-left: 45%;
+            margin-right: auto; */
         }
 
         /* RADIO */
         .radio_text {
             padding: 10px;
-            margin: 5px;
+            padding-bottom: 30px;
+            margin: 35px 10px;
             background-color: var(--secondary-bg);
             text-align: center;
+            font-size: 24px;
+
         }
         .radio_img {
             padding: 10px;
@@ -93,10 +97,6 @@
             background-color: var(--secondary-highlight);
         }
 
-        .radio_text {
-            margin: 10px;
-        }
-
         .radio_text input[type="radio"] {
             opacity: 0;
             position: fixed;
@@ -118,11 +118,12 @@
             display: inline-block;
 
             font-family: sans-serif, Arial;
-            font-size: 32px;
+            font-size: 36px;
             border: 1px solid #fff;
+            background-color: #fff;
             box-shadow: 0 0 3px 3px var(--secondary-shadow);
-            padding: 10px;
-            margin: 5px;
+            padding: 30px;
+            margin: 5px 15px;
         }
 
         .radio_text label:hover {
@@ -138,16 +139,81 @@
             background-color: var(--secondary-highlight);
         }
 
+        .cover {
+            object-fit: contain;
+            width: 200px;
+            height: 200px;
+        }
+
         .main {
             margin: 10px;
             text-align: center;
+        }
+
+        body{
+            font-family: sans-serif, Arial;
+        }
+
+        h2 {
+            margin-bottom: 30px;
+            font-size: 50px;
+        }
+        select {
+            font-size:46px; 
+        }
+        optgroup { 
+            font-size:46px; 
+        }
+
+        input[type="text"] {
+            text-align: left;
+            padding-left:20px;
+            width: 66%;
+            height: 100px;
+            font-size: 46px;
+            margin: 10px;
+            border-width: 3px;
+        }
+
+        input[type="number"] {
+            text-align: left;
+            padding-left:20px;
+            width: 66%;
+            height: 100px;
+            font-size: 46px;
+            margin: 10px;
+            border-width: 3px;
+        }
+
+        .center_align{
+            text-align: center;
+        }
+
+        .left_right_container{
+            /* border: 1px solid rgb(0, 141, 49); */
+            padding: 0;
+            width:100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-gap: 20px;
+        }
+        .left_align{
+            text-align: left;
+            padding: 10px 20px;
+        }
+        .right_align{
+            text-align: right;
+            padding: 10px 20px;
         }
 
     </style>
 </head>
 <body>
     <nav>
-        <a href="{{ url_for('home') }}">Experiment</a>
+        <div class="left_right_container">
+            <div class="left_align"><img width="80px" height="auto" src="/static/img/kth_logo.png"></div>
+            <div class="right_align"><a href="{{ url_for('home') }}">{{ user }} </a></div>
+        </div>
     </nav>
     <hr>
     <div class="content">
