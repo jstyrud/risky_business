@@ -9,8 +9,9 @@
                 <h2>{{ message[2] }}</h2>
 
                 <div class="left_right_container">
+                    <!-- <h3>Not at all &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; Very</h3> -->
                     <div class="left_align"><h3>{{ message[4][0] }}</h3></div>
-                    <div class="right_align"><h3>{{ message[4][1] }}</h3></div>
+                    <div class="right_align"><h3>{{ message[4][1] }}&emsp;{{ message[4][2] }}</h3></div>
                 </div>
 
                 {% for response in message[3] %}

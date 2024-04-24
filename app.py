@@ -12,8 +12,8 @@ app = Flask(__name__)
 USERID = -1
 TRIALID = ""
 TRIAL_COUNTER = 0
-TRIAL_TYPE = "failure"
-TRIALS_COMPLETED = {"failure": False, "flawless": False}
+TRIAL_TYPE = "risky"
+TRIALS_COMPLETED = {"risky": False, "safe": False}
 
 ### CSV Filename:
 CSV_FILENAME = 'survey_results.csv'
@@ -22,16 +22,32 @@ JSON_DATA = {}
 #CSV filename for consent data, which should be kept seperate
 CONSENT_FILENAME = 'participants.csv'
 
+def return_questions_for_condition(questions, condition):
+    
+    questions_to_display = []
+    
+    for q in questions:
+        print(str(condition))
+        print(str(q))
+        if "risky" in condition and "_R" in q[0]:
+            questions_to_display.append(q)
+        elif "safe" in condition and "_S" in q[0]:
+            questions_to_display.append(q)
+    
+    print("Questions calculatd", questions_to_display)
+    return questions_to_display
+
+
 
 def refine_non_failure_data(original_dict):
     new_dict = {}
 
     for key, value in original_dict.items():
-        if key.endswith('_F'):
-            corresponding_key = key[:-1] + 'NF'
+        if key.endswith('_R'):
+            corresponding_key = key[:-1] + 'S'
             new_value = original_dict[corresponding_key]
-        elif key.endswith('_NF'):
-            corresponding_key = key[:-2] + 'F'
+        elif key.endswith('_S'):
+            corresponding_key = key[:-2] + 'R'
             new_value = original_dict[corresponding_key]
         else:
             new_value = value
@@ -69,7 +85,7 @@ def write_headers():
 # Routes
 ######################
 
-## Home ####################
+## Page 1: Home ####################
 @app.route('/', methods=['POST', 'GET'])
 def home():
 
@@ -79,7 +95,7 @@ def home():
 
     # This clears the global variables whenever anyone goes to the home page - this might not be what you want, if multiple people will be using this at once for e.g
     JSON_DATA = {}
-    TRIALS_COMPLETED["failure"] = TRIALS_COMPLETED["flawless"] = False
+    TRIALS_COMPLETED["risky"] = TRIALS_COMPLETED["safe"] = False
 
     # When the data is returned to the page, i.e submit is sent:
     if request.method == 'POST':
@@ -103,37 +119,7 @@ def home():
     # If the page is called, it will generate the following html file
     return render_template('start.html')
 
-## final_opinions ####################
-@app.route('/final_opinions', methods=['POST', 'GET'])
-def final_opinions():
-
-    global USERID
-    global TRIALID
-    global JSON_DATA
-
-
-
-    # When the data is returned to the page, i.e submit is sent:
-    if request.method == 'POST':
-                
-        print(request.form)
-        for v in request.form:
-            try:
-                current_response = "NA" if request.form[v] == "" else request.form[v]
-                JSON_DATA[v] = current_response
-            except Exception as exc:
-                current_response = "NA"
-                JSON_DATA[v] = current_response
-        
-        print("FINAL RESPONSE JSON: ", JSON_DATA)
-
-        return redirect('/fin')
-
-    # If the page is called, it will generate the following html file
-    return render_template('final_opinions.html', user=USERID, trial=TRIALID)
-
-
-## consent ####################
+## Page 2a: consent ####################
 @app.route('/consent', methods=['POST', 'GET'])
 def consent():
 
@@ -174,7 +160,18 @@ def consent():
     # If the page is called, it will generate the following html file
     return render_template('consent.html', user=USERID, trial=TRIALID)
 
-## demographics ##############
+## Page 2b nonconsent ####################
+@app.route('/nonconsent', methods=['POST', 'GET'])
+def nonconsent():
+
+    global USERID
+    global TRIALID
+
+    # If the page is called, it will generate the following html file
+    return render_template('nonconsent.html', user=USERID, trial=TRIALID)
+
+
+## Page 3 demographics  ##############
 @app.route('/demographics', methods=['POST', 'GET'])
 def demographics():
 
@@ -196,50 +193,262 @@ def demographics():
                 current_response = "NA"
                 JSON_DATA[v] = current_response
 
-        return redirect('/legworkdone')
+        return redirect('/bell1')
 
     # If the page is called, it will generate the following html file
     return render_template('demographics.html', user=USERID, trial=TRIALID)
 
-## position ##############
-@app.route('/position', methods=['POST', 'GET'])
-def position():
+
+## Page 4 before first trial  ##############
+@app.route('/bell1', methods=['GET'])
+def bell1():
+    global USERID
+    global TRIALID
+
+    return render_template('bell1.html', user=USERID, trial=TRIALID)
+
+
+## Page 5 and 7 questions for practice trials ###
+@app.route('/questions', methods=['POST', 'GET'])
+def showQuestions():
+
+    global USERID
+    global TRIALID
+    
+    # Calculate which questions to use, given the questions and the trial type (i.e VR):
+    print("here we go   "+ TRIALID)
+    QUESTIONS_TO_DISPLAY=return_questions_for_condition(QUESTIONS, TRIALID)
+    RANDOM_QUESTIONS = QUESTIONS_TO_DISPLAY
+
+    # Randomize the questions:
+    random.shuffle(RANDOM_QUESTIONS)
+
+    # Check if data is coming back from the form:
+    if request.method == 'POST':
+        
+        print("Responses: ")
+
+        # All the trial questions ID's (e.g E1_VR) had either _VR or _S, this allowed us to check for these to seperate the questions
+        # Set the variable to the corresponding trialID
+        trial_postfix = ""
+        if(TRIALID == "risky"):
+            trial_postfix = "_R"
+        if(TRIALID == "safe"):
+            trial_postfix = "_S"
+        
+
+
+        print('postfix' + trial_postfix)
+            
+
+        # For each question in the stack:
+        for mq in QUESTIONS:
+
+            # Check again if the postfix exists for the current question, if it does store the response
+            if(trial_postfix in mq[0]):
+                k = mq[0]
+                print("question " + k)
+                try:
+                    current_response = "NA" if request.form[k] == "" else request.form[k]
+                    print("req form: "+ request.form[k])
+                    JSON_DATA[k] = current_response
+                except Exception as exc:
+                    current_response = "NA"
+                    JSON_DATA[k] = current_response
+
+
+        print("JSON: ", JSON_DATA)
+        # print("CSV: ", USERID, TRIALID, response_csv)
+
+        try:
+            print(TRIALID)
+            print("risky completed", TRIALS_COMPLETED["risky"])
+            print("safe completed", TRIALS_COMPLETED["safe"])
+            now = datetime.now()
+            # Once the questions are asked for the type of trail, make them as done and switch to the other type:
+            if TRIALID == "risky":
+                TRIALS_COMPLETED["risky"] = True
+                TRIALID = "safe"
+            elif TRIALID == "safe":
+                print("checkpoint 6")
+                TRIALS_COMPLETED["safe"] = True
+                TRIALID = "risky"
+            else:
+                    raise Exception("invalid TRIALID")
+
+            print(TRIALID)
+            print("risky completed", TRIALS_COMPLETED["risky"])
+            print("safe completed", TRIALS_COMPLETED["safe"])
+            # If both trials are completed, go to the final questions
+            if(TRIALS_COMPLETED["risky"] == True and TRIALS_COMPLETED["safe"] == True):
+                
+
+                return redirect('/thechoice1')
+
+            # Once they have completed, go to the bell page to wait until the next task is completed
+            return render_template('bell2.html', user=USERID, trial=TRIALID)
+        except Exception as exc:
+            print("Error executing SQL: %s"%exc)
+            return jsonify({'page': 'list', 'success': False})
+            
+    # Otherwise we show the questions:
+    return render_template('trial_questions.html', user=USERID, trial=TRIALID, questions=QUESTIONS_TO_DISPLAY)
+
+
+## Page 6  for between trials ###
+
+@app.route('/bell2', methods=['GET'])
+def bell2():
+
+    global USERID
+    global TRIALID
+
+    # If the page is called, it will generate the following html file
+    return render_template('bell2.html', user=USERID, trial=TRIALID)
+
+################################ TO DO ##################
+
+# Page 9a the choice coworker
+@app.route('/thechoice1', methods=['POST', 'GET'])
+def thechoice1():
+    global USERID
+    global TRIALID
+    global JSON_DATA
+
+    if request.method == 'POST':
+        print('made it')
+        try:
+            # Store the user variables:
+            COWORKER_CHOICE = request.form['RobotChoiceCoworker']
+
+            print(COWORKER_CHOICE)
+
+            # Store it in the JSON_DATA 
+            if COWORKER_CHOICE == 'robot1':
+                # TRIALID is reverted back to  the first robot they interacted with 
+                JSON_DATA["RobotChoiceCoworker"] = TRIALID
+                print(TRIALID)
+            if COWORKER_CHOICE == 'robot2':
+                if TRIALID == "risky":
+                    JSON_DATA["RobotChoiceCoworker"] = "safe"
+                    print("safe")
+                elif TRIALID == "safe":
+                    JSON_DATA["RobotChoiceCoworker"] = "risky"
+                    print("risky")
+                else:
+                    raise Exception("invalid TRIALID")
+                # the second robot, aka the last robot they interacted with, is still saved in the trial id 
+                
+            else:
+                raise Exception("invalid choice")
+       
+
+            #Once the page has been submitted, it moves on to the next page - i.e consent (look for route below.)
+            return redirect('/thoughtsonthechoice1')
+        except Exception as e:
+            # In the case of an error, return to home page.
+            return redirect('/')
+
+    return render_template('thechoice1.html', user=USERID, trial=TRIALID)
+
+
+
+# Page 9b thoughts on the choice coworker 
+@app.route('/thoughtsonthechoice1', methods=['POST', 'GET'])
+def thoughtsonthechoice1():
+    global USERID
+    global TRIALID
+    global JSON_DATA
+
+    return render_template('thoughtsonthechoice1.html', user=USERID, trial=TRIALID)
+
+# Page 10a the choice money
+@app.route('/thechoice2', methods=['POST', 'GET'])
+def thechoice2():
+    global USERID
+    global TRIALID
+    global JSON_DATA
+
+    return render_template('thechoice2.html', user=USERID, trial=TRIALID)
+
+# Page 10b thoughts on the choice money 
+@app.route('/thoughtsonthechoice2', methods=['POST', 'GET'])
+def thoughtsonthechoice2():
+    global USERID
+    global TRIALID
+    global JSON_DATA
+
+    return render_template('thoughtsonthechoice2.html', user=USERID, trial=TRIALID)
+
+## Page 11 before final run ###
+
+@app.route('/bell3', methods=['GET'])
+def bell3():
+
+    global USERID
+    global TRIALID
+
+    # If the page is called, it will generate the following html file
+    return render_template('bell3.html', user=USERID, trial=TRIALID)
+
+
+## Page 11b experiementer input ###
+@app.route('/moneyinput', methods=['GET'])
+def moneyinput():
+
+    global USERID
+    global TRIALID
+
+    # If the page is called, it will generate the following html file
+    return render_template('moneyinput.html', user=USERID, trial=TRIALID)
+
+
+## Page 12 reflections on the choice ###
+
+@app.route('/reflections', methods=['GET'])
+def reflections():
+
+    global USERID
+    global TRIALID
+
+    # If the page is called, it will generate the following html file
+    return render_template('reflections.html', user=USERID, trial=TRIALID)
+
+
+
+## Page 13 final_opinions ####################
+@app.route('/final_opinions', methods=['POST', 'GET'])
+def final_opinions():
 
     global USERID
     global TRIALID
     global JSON_DATA
 
+
     # When the data is returned to the page, i.e submit is sent:
     if request.method == 'POST':
-     
+                
         print(request.form)
         for v in request.form:
-            # JSON_DATA[v] = request.form[v]
-            print(v, request.form[v])
             try:
                 current_response = "NA" if request.form[v] == "" else request.form[v]
                 JSON_DATA[v] = current_response
             except Exception as exc:
                 current_response = "NA"
                 JSON_DATA[v] = current_response
+        
+        print("FINAL RESPONSE JSON: ", JSON_DATA)
 
-        return redirect('/questions')
-
-    # If the page is called, it will generate the following html file
-    return render_template('position.html', user=USERID, trial=TRIALID)
-
-
-## Bell ####################
-@app.route('/bell', methods=['POST', 'GET'])
-def bell():
-
-    global USERID
-    global TRIALID
+        return redirect('/fin')
 
     # If the page is called, it will generate the following html file
-    return render_template('bell.html', user=USERID, trial=TRIALID)
+    return render_template('final_opinions.html', user=USERID, trial=TRIALID)
 
-## Fin ####################
+
+
+
+
+## page 14 Fin ####################
 @app.route('/fin', methods=['POST', 'GET'])
 def fin():
 
@@ -267,95 +476,10 @@ def fin():
     # If the page is called, it will generate the following html file
     return render_template('fin.html', user=USERID, trial=TRIALID)
 
-## nonconsent ####################
-@app.route('/nonconsent', methods=['POST', 'GET'])
-def nonconsent():
-
-    global USERID
-    global TRIALID
-
-    # If the page is called, it will generate the following html file
-    return render_template('nonconsent.html', user=USERID, trial=TRIALID)
-
-## Questions Page ####################
-@app.route('/questions', methods=['POST', 'GET'])
-def showQuestions():
-
-    global USERID
-    global TRIALID
-    
-    # Calculate which questions to use, given the questions and the trial type (i.e VR):
-    print("here we go   "+ TRIALID)
-    QUESTIONS_TO_DISPLAY=return_questions_for_condition(QUESTIONS, TRIALID)
-    RANDOM_QUESTIONS = QUESTIONS_TO_DISPLAY
-
-    # Randomize the questions:
-    random.shuffle(RANDOM_QUESTIONS)
-
-    # Check if data is coming back from the form:
-    if request.method == 'POST':
-        print("Responses: ")
-
-        # All the trial questions ID's (e.g E1_VR) had either _VR or _S, this allowed us to check for these to seperate the questions
-        # Set the variable to the corresponding trialID
-        trial_postfix = ""
-        if(TRIALID == "flawless"):
-            trial_postfix = "_NF"
-        if(TRIALID == "failure"):
-            trial_postfix = "_F"
-        
-
-
-        print('postfix' + trial_postfix)
-            
-
-        # For each question in the stack:
-        for mq in QUESTIONS:
-
-            # Check again if the postfix exists for the current question, if it does store the response
-            if(trial_postfix in mq[0]):
-                k = mq[0]
-                print("question " + k)
-                try:
-                    current_response = "NA" if request.form[k] == "" else request.form[k]
-                    print("req form: "+ request.form[k])
-                    JSON_DATA[k] = current_response
-                except Exception as exc:
-                    current_response = "NA"
-                    JSON_DATA[k] = current_response
-
-
-        print("JSON: ", JSON_DATA)
-        # print("CSV: ", USERID, TRIALID, response_csv)
-
-        try:
-            now = datetime.now()
-            # Once the questions are asked for the type of trail, make them as done and switch to the other type:
-            if TRIALID == "failure":
-                TRIALS_COMPLETED["failure"] = True
-                TRIALID = "flawless"
-            else:
-                print("checkpoint 6")
-                TRIALS_COMPLETED["flawless"] = True
-                TRIALID = "failure"
-
-            # If both trials are completed, go to the final questions
-            if(TRIALS_COMPLETED["failure"] == True and TRIALS_COMPLETED["flawless"] == True):
-                
-
-                return redirect('/almostdone')
-
-            # Once they have completed, go to the bell page to wait until the next task is completed
-            return render_template('bell.html', user=USERID, trial=TRIALID)
-        except Exception as exc:
-            print("Error executing SQL: %s"%exc)
-            return jsonify({'page': 'list', 'success': False})
-            
-    # Otherwise we show the questions:
-    return render_template('index.html', user=USERID, trial=TRIALID, questions=QUESTIONS_TO_DISPLAY)
 
 
 
+""""
 @app.route('/third_set_of_questions', methods=['POST', 'GET'])
 def showThirdSetOfQuestions():
 
@@ -400,20 +524,7 @@ def showThirdSetOfQuestions():
 
 # Split the questions to only provide the ones that are designed for VR or S(creen)
 # Returns a list of questions, that are marked with the trialID
-def return_questions_for_condition(questions, condition):
-    
-    questions_to_display = []
-    
-    for q in questions:
-        print(str(condition))
-        print(str(q))
-        if "failure" in condition and "_F" in q[0]:
-            questions_to_display.append(q)
-        elif "flawless" in condition and "_NF" in q[0]:
-            questions_to_display.append(q)
-    
-    print("Questions calculatd", questions_to_display)
-    return questions_to_display
+
 
 def return_questions_for_risk_aversion(questions, condition):
     
@@ -426,33 +537,8 @@ def return_questions_for_risk_aversion(questions, condition):
     return questions_to_display
 
 
-@app.route('/legworkdone', methods=['GET'])
-def legworkdone():
-    global USERID
-    global TRIALID
-    return render_template('legworkdone.html', user=USERID, trial=TRIALID)
-@app.route('/waitingroomone', methods=['GET'])
-def firstwaitingroom():
-    global USERID
-    global TRIALID
-    return render_template('waitingroomone.html', user=USERID, trial=TRIALID)
-@app.route('/almostdone', methods=['GET'])
-def almostdone():
-    global USERID
-    global TRIALID
-    return render_template('almostdone.html', user=USERID, trial=TRIALID)
-@app.route('/firstpartdone', methods=['GET'])
-def firstpartdone():
-    global USERID
-    global TRIALID
-    return render_template('firstpartdone.html', user=USERID, trial=TRIALID)
-@app.route('/waiting_room', methods=['GET'])
-def waiting_room():
-    global USERID
-    global TRIALID
-    return render_template('waiting_room.html', user=USERID, trial=TRIALID)
 
-
+ """
 if __name__ == "__main__":
     # write_headers()
     app.run(debug=True, host="0.0.0.0", port=1231)

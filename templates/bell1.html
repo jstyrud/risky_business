@@ -3,13 +3,15 @@
 {% block content %}
 
 <div class="main">
-    <h2>Well done!</h2>
-    <h1> You have finished the study.
-        Now please press continue and fill out the rest of the survey.
-    </h1>
+    <h1>You are now ready to start the experiment! Please give the iPad to the experimenter. </h1>
+    
     
     <form action="/questions" method="get">
+        <h1> FOR EXPERIMENTER USE ONLY: </h1>
         <button type="submit">Continue</button>
     </form>
+    
 </div>
+    
+    
 {% endblock %}

@@ -13,53 +13,22 @@
 #             ["Q15", "radio_img", "What was the robot's task", ["artichoke", "basket","sandtimer"]]
 #     ]
     
-QUESTIONS = [
+QUESTIONS = [ ]
 
-    #TRUST
-        ["T1_F", "radio_text", "The drone’s behaviour was predictable",["1", "2", "3", "4", "5","6","7"], ["Strongly Disagree", "Strongly Agree"] ],
-        ["T2_F", "radio_text", "The drone was capable of sensing my emotions",    ["1", "2", "3", "4", "5","6","7"], ["Strongly Disagree", "Strongly Agree"] ],
-        
-        
-        ["T3_F", "radio_text", "I could count on the drone to do its job", ["1", "2", "3", "4", "5","6","7"], ["Strongly Disagree", "Strongly Agree"]],
-        ["T4_F", "radio_text", "Piloting the drone was enjoyable",    ["1", "2", "3", "4", "5","6","7"], ["Strongly Disagree", "Strongly Agree"] ],
+assoc = ["Reliable", "Sincere", "Capable", "Ethical", "Predictable", "Genuine", "Skilled", "Respectable", 
+                "Someone you can count on", "Candid", "Competent", "Principled", "Consistent", "Authentic",
+                "Meticulous", "Has integrity"]
 
+for i in range(len(assoc)):
+        risky_q_string = "T"+str(i)+"_R"
+        risky_q =  [risky_q_string, "radio_text", assoc[i],["1", "2", "3", "4", "5","6","7", ""], ["Not at all", "Very", "Does Not Fit"] ]
+        QUESTIONS.append(risky_q)
 
+        safe_q_string = "T"+str(i)+"_S"
+        safe_q =  [safe_q_string, "radio_text", assoc[i],["1", "2", "3", "4", "5","6","7", ""], ["Not at all", "Very", "Does Not Fit"] ]
+        QUESTIONS.append(safe_q)
 
-
-        ["T5_F", "radio_text", "The drone would be able to cope with similar tasks in the future",    ["1", "2", "3", "4", "5","6","7"], ["Strongly Disagree", "Strongly Agree"] ],
-        ["T6_F", "radio_text", "I was satisfied with the level of control I had whilst piloting the drone",    ["1", "2", "3", "4", "5","6","7"], ["Strongly Disagree", "Strongly Agree"] ],
-
-
-
-
-        ["T7_F", "radio_text", "Overall, I trust the drone",    ["1", "2", "3", "4", "5","6","7"], ["Strongly Disagree", "Strongly Agree"] ],
-        ["T8_F", "radio_text", "I would be willing to fly this drone again in the future",    ["1", "2", "3", "4", "5","6","7"], ["Strongly Disagree", "Strongly Agree"] ],
-        ["T9_F", "radio_text", "The drone's behaviour was reliable",    ["1", "2", "3", "4", "5","6","7"], ["Strongly Disagree", "Strongly Agree"] ],
-
-
-        ["T1_NF", "radio_text", "The drone’s behaviour was predictable",["1", "2", "3", "4", "5","6","7"], ["Strongly Disagree", "Strongly Agree"] ],
-        ["T2_NF", "radio_text", "The drone was capable of sensing my emotions",    ["1", "2", "3", "4", "5","6","7"], ["Strongly Disagree", "Strongly Agree"] ],
-        
-        
-        ["T3_NF", "radio_text", "I could count on the drone to do its job", ["1", "2", "3", "4", "5","6","7"], ["Strongly Disagree", "Strongly Agree"]],
-        ["T4_NF", "radio_text", "Piloting the drone was enjoyable",    ["1", "2", "3", "4", "5","6","7"], ["Strongly Disagree", "Strongly Agree"] ],
-
-
-
-
-        ["T5_NF", "radio_text", "The drone would be able to cope with similar tasks in the future",    ["1", "2", "3", "4", "5","6","7"], ["Strongly Disagree", "Strongly Agree"] ],
-        ["T6_NF", "radio_text", "I was satisfied with the level of control I had whilst piloting the drone",    ["1", "2", "3", "4", "5","6","7"], ["Strongly Disagree", "Strongly Agree"] ],
-
-
-
-
-        ["T7_NF", "radio_text", "Overall, I trust the drone",    ["1", "2", "3", "4", "5","6","7"], ["Strongly Disagree", "Strongly Agree"] ],
-        ["T8_NF", "radio_text", "I would be willing to fly this drone again in the future",    ["1", "2", "3", "4", "5","6","7"], ["Strongly Disagree", "Strongly Agree"] ],
-        ["T9_NF", "radio_text", "The drone's behaviour was reliable",    ["1", "2", "3", "4", "5","6","7"], ["Strongly Disagree", "Strongly Agree"] ],
-
-    
-]
-
+print(QUESTIONS)
 # Unused, questions are randomized
 QUESTION_ORDER = {
 
