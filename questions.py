@@ -18,14 +18,17 @@ QUESTIONS = [ ]
 assoc = ["Reliable", "Sincere", "Capable", "Ethical", "Predictable", "Genuine", "Skilled", "Respectable", 
                 "Someone you can count on", "Candid", "Competent", "Principled", "Consistent", "Authentic",
                 "Meticulous", "Has integrity"]
+assoc_labels =["Reliable", "Sincere", "Capable", "Ethical", "Predictable", "Genuine", "Skilled", "Respectable", 
+                "Count_on", "Candid", "Competent", "Principled", "Consistent", "Authentic",
+                "Meticulous", "integrity"]
 
 for i in range(len(assoc)):
-        risky_q_string = "T_"+str(i)+"_R"
-        risky_q =  [risky_q_string, "radio_text", assoc[i],["1", "2", "3", "4", "5","6","7", "NA"], ["Not at all", "Very", "Does Not Fit"] ]
+        risky_q_string = "T_"+assoc_labels[i]+"_R"
+        risky_q =  [risky_q_string, "radio_text", assoc[i],["1", "2", "3", "4", "5","6","7", "*"], ["Not at all", "Very", "Does Not Fit"] ]
         QUESTIONS.append(risky_q)
 
-        safe_q_string = "T_"+str(i)+"_S"
-        safe_q =  [safe_q_string, "radio_text", assoc[i],["1", "2", "3", "4", "5","6","7", "NA"], ["Not at all", "Very", "Does Not Fit"] ]
+        safe_q_string = "T_"+assoc_labels[i]+"_S"
+        safe_q =  [safe_q_string, "radio_text", assoc[i],["1", "2", "3", "4", "5","6","7", "*"], ["Not at all", "Very", "Does Not Fit"] ]
         QUESTIONS.append(safe_q)
 
 print(QUESTIONS)

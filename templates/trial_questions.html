@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h2>{% block title %} Please respond to the following questions {% endblock %}</h2>
+    <h2> {% block title %} Please rate the robot using the scale from 0 (Not at all) to 7 (Very). 
+        If a particular item does not seem to fit the robot in the situation, please select the option that says "Does Not Fit." 
+         {% endblock %}</h2>
     <form method="post">
     {% for message in questions %}
         <div class="{{ message[1] }}">

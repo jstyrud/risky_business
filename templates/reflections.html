@@ -13,16 +13,16 @@
                 <h2> How satisfied are you in your choice of {{choice}}?  </h2>
                 <div class="left_right_container">
                     <div class="left_align"><h3>not satisfied</h3></div>
-                    <div class="right_align"><h3></h3> satisfied</div>
+                    <div class="right_align"><h3> satisfied</h3></div>
                 </div>
                 <!-- <h3>Not at all &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; Very</h3> -->
-                <input type="range" name="moneysatisfaction" id="satisfation" min="0" max="100" value="50" step="5"> 
+                <input type="range" class = "slider" name="moneysatisfaction" id="satisfation" min="0" max="100" value="50" step="5"> 
             </div>
 
             <h1>Would you select {{choice}} to perform this task again </h1>
             <select name="moneyredo" id="moneyredo" required >
                 <optgroup>
-                <option value="" disabled selected>Select condition</option>
+                <option value="NA" selected label="Select here">Select here</option>
                 <option value="yes">Yes</option>
                 <option value="no">No</option>
             </optgroup>

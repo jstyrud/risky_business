@@ -17,9 +17,15 @@ MONEYID = ""
 TRIALS_COMPLETED = {"risky": False, "safe": False}
 
 # WARNING: ALL NEW QUESTION TAGS MUST BE ENTERED INTO THIS LIST TO ENSURE THAT DATA IS STORED IN THE CORRECT ORDER
+
+
 CSV_ORDERING = ["ParticipantID",  	"TrialID",	"age",	"gender",	"risk_willingess",	
-                "T_0_R",	"T_1_R",	"T_2_R",	"T_3_R",	"T_4_R",	"T_5_R",	"T_6_R",	"T_7_R",	"T_8_R",	"T_9_R",	"T_10_R",	"T_11_R",	"T_12_R",	"T_13_R",	"T_14_R",	"T_15_R",
-                "T_0_S",	"T_1_S",	"T_2_S",	"T_3_S",	"T_4_S",	"T_5_S",	"T_6_S",	"T_7_S",	"T_8_S",	"T_9_S",	"T_10_S",	"T_11_S",	"T_12_S",	"T_13_S",	"T_14_S",	"T_15_S",	
+                "T_Reliable_R",	"T_Sincere_R",	"T_Capable_R",	"T_Ethical_R",	"T_Predictable_R",	"T_Genuine_R",	"T_Skilled_R",
+                    "T_Respectable_R",	"T_Count_on_R",	"T_Candid_R",	"T_Competent_R",	"T_Principled_R",	"T_Consistent_R",	
+                    "T_Authentic_R",	"T_Meticulous_R",	"T_integrity_R",
+                "T_Reliable_S",	"T_Sincere_S",	"T_Capable_S",	"T_Ethical_S",	"T_Predictable_S",	"T_Genuine_S",	"T_Skilled_S",
+                    "T_Respectable_S",	"T_Count_on_S",	"T_Candid_S",	"T_Competent_S",	"T_Principled_S",	"T_Consistent_S",	
+                    "T_Authentic_S",	"T_Meticulous_S",	"T_integrity_S",
                 "RobotChoiceCoworker",	"coworkercomfort",	"coworkerreasoning",	
                 "RobotChoiceMoney",	"moneycomfort",	"moneyreasoning",	"moneylikelihood",	
                 "moneyID",	"moneysatisfaction",	"moneyredo",	"final_feedback"
@@ -40,9 +46,9 @@ def return_questions_for_condition(questions, condition):
     for q in questions:
         print(str(condition))
         print(str(q))
-        if "risky" in condition and "_R" in q[0]:
+        if "risky" in condition and   "_R" == q[0][-2:]:
             questions_to_display.append(q)
-        elif "safe" in condition and "_S" in q[0]:
+        elif "safe" in condition and "_S" == q[0][-2:]:
             questions_to_display.append(q)
     
     print("Questions calculatd", questions_to_display)
@@ -214,7 +220,7 @@ def showQuestions():
         for mq in QUESTIONS:
 
             # Check again if the postfix exists for the current question, if it does store the response
-            if(trial_postfix in mq[0]):
+            if(trial_postfix == mq[0][-2:]):
                 k = mq[0]
                 print("question " + k)
                 try:
@@ -472,6 +478,11 @@ def moneyinput():
     global MONEY_CHOICE
     global MONEYID
 
+
+    if MONEY_CHOICE == TRIALID:
+        choicemade = "Protype 1"
+    else:
+         choicemade = "Protype 2"
     
     # When the data is returned to the page, i.e submit is sent:
     if request.method == 'POST':
@@ -536,7 +547,7 @@ def reflections():
 
 
     # If the page is called, it will generate the following html file
-    return render_template('reflections.html', user=USERID, trial=TRIALID)
+    return render_template('reflections.html', user=USERID, trial=TRIALID, choice = choicemade)
 
 
 
@@ -591,7 +602,7 @@ def fin():
         gathered_key_set = set(JSON_DATA.keys()) 
 
         if not hardcoded_key_set == gathered_key_set:
-            raise Exception("SOME OF THE DATA IS NOT BEING SAVED, YELL AT ANNA")
+            raise Exception("SOME OF THE DATA IS NOT BEING SAVED, YELL AT ANNA, or check CSV_ORDERING")
 
 
         with open(CSV_FILENAME, 'a') as f:
