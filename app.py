@@ -16,6 +16,16 @@ MONEY_CHOICE = ""
 MONEYID = ""
 TRIALS_COMPLETED = {"risky": False, "safe": False}
 
+# WARNING: ALL NEW QUESTION TAGS MUST BE ENTERED INTO THIS LIST TO ENSURE THAT DATA IS STORED IN THE CORRECT ORDER
+CSV_ORDERING = ["ParticipantID",  	"TrialID",	"age",	"gender",	"risk_willingess",	
+                "T_0_R",	"T_1_R",	"T_2_R",	"T_3_R",	"T_4_R",	"T_5_R",	"T_6_R",	"T_7_R",	"T_8_R",	"T_9_R",	"T_10_R",	"T_11_R",	"T_12_R",	"T_13_R",	"T_14_R",	"T_15_R",
+                "T_0_S",	"T_1_S",	"T_2_S",	"T_3_S",	"T_4_S",	"T_5_S",	"T_6_S",	"T_7_S",	"T_8_S",	"T_9_S",	"T_10_S",	"T_11_S",	"T_12_S",	"T_13_S",	"T_14_S",	"T_15_S",	
+                "RobotChoiceCoworker",	"coworkercomfort",	"coworkerreasoning",	
+                "RobotChoiceMoney",	"moneycomfort",	"moneyreasoning",	"moneylikelihood",	
+                "moneyID",	"moneysatisfaction",	"moneyredo",	"final_feedback"
+                ]
+
+
 ### CSV Filename:
 CSV_FILENAME = 'survey_results.csv'
 ### Variable that is used to store all the user data, atm this doesn't get saved until completion, so there is no recovery from failure.
@@ -39,52 +49,6 @@ def return_questions_for_condition(questions, condition):
     return questions_to_display
 
 
-
-def refine_non_failure_data(original_dict):
-    new_dict = {}
-
-    for key, value in original_dict.items():
-        if key.endswith('_R'):
-            print(key, value)
-            corresponding_key = key[:-1] + 'S'
-            print(corresponding_key)
-            new_value = original_dict[corresponding_key]
-        elif key.endswith('_S'):
-            print(key, value)
-            corresponding_key = key[:-1] + 'R'
-            print(corresponding_key)
-            new_value = original_dict[corresponding_key]
-        else:
-            new_value = value
-
-        new_dict[key] = new_value
-
-    return new_dict
-
-### This function will add the headers, based on the variables below, and the questions (stored in questions.py)
-def write_headers():
-
-    ### Check for header line:
-    first_line = ""
-    with open(CSV_FILENAME) as f:
-        first_line = f.readline().strip('\n')
-
-    ### Write file headers
-    JSON_DATA["ParticipantID"] = ""
-    JSON_DATA["TrialID"] = ""
-
-    h = "Time,ParticipantID,TrialID,"
-    for v in QUESTIONS:
-        current_q = v[0]
-        h = h + current_q + ", " #+ ("," if i<len(v)-1 else "")
-
-        JSON_DATA[current_q] = ""
-
-    if(h == first_line):
-        print("Header exists")
-    else:
-        with open(CSV_FILENAME, 'a') as f:
-            f.write(h + "\n")
 
 ######################
 # Routes
@@ -616,22 +580,33 @@ def fin():
     global TRIALID
     global JSON_DATA
 
-    file_exists = os.path.isfile(CSV_FILENAME)
-
-    if TRIALID == 'safe':
-                NON_FAILURE_DATA = refine_non_failure_data(JSON_DATA)
-                JSON_DATA = NON_FAILURE_DATA
+    try:
+        file_exists = os.path.isfile(CSV_FILENAME)
 
 
-    print("HERE IS THE JSON_DATA  " +str(JSON_DATA))
+        print("HERE IS THE JSON_DATA  " +str(JSON_DATA))
 
-    with open(CSV_FILENAME, 'a') as f:
-        # f.write(s + "\n")
-        
-        w = csv.DictWriter(f, JSON_DATA.keys())
-        if not file_exists:
-            w.writeheader()  # file doesn't exist yet, write a header
-        w.writerow(JSON_DATA)
+
+        hardcoded_key_set = set(CSV_ORDERING)
+        gathered_key_set = set(JSON_DATA.keys()) 
+
+        if not hardcoded_key_set == gathered_key_set:
+            raise Exception("SOME OF THE DATA IS NOT BEING SAVED, YELL AT ANNA")
+
+
+        with open(CSV_FILENAME, 'a') as f:
+            # f.write(s + "\n")
+            
+            w = csv.DictWriter(f, CSV_ORDERING)
+            if not file_exists:
+                w.writeheader()  # file doesn't exist yet, write a header
+            w.writerow(JSON_DATA)
+
+    except Exception as e:
+            print(e)
+            # In the case of an error, return to home page.
+            return redirect('/')
+            
 
     # If the page is called, it will generate the following html file
     return render_template('fin.html', user=USERID, trial=TRIALID)
@@ -639,66 +614,8 @@ def fin():
 
 
 
-""""
-@app.route('/third_set_of_questions', methods=['POST', 'GET'])
-def showThirdSetOfQuestions():
-
-    global USERID
-    global TRIALID
-    
-    # Calculate which questions to use, given the questions and the trial type (i.e VR):
-    QUESTIONS_TO_DISPLAY=return_questions_for_risk_aversion(QUESTIONS_C, TRIALID)
-    random.shuffle(QUESTIONS_TO_DISPLAY)
-
-    # Check if data is coming back from the form:
-    if request.method == 'POST':
-        print("Responses: ")
-
-        # For each question in the stack:
-        for mq in QUESTIONS_C:
-
-            # Check again if the postfix exists for the current question, if it does store the response
-                k = mq[0]
-                try:
-                    current_response = "NA" if request.form[k] == "" else request.form[k]
-                    JSON_DATA[k] = current_response
-                except Exception as exc:
-                    current_response = "NA"
-                    JSON_DATA[k] = current_response
-
-        print("JSON: ", JSON_DATA)
-
-        try:
-            now = datetime.now()
-            return redirect('/final_opinions')
-
-        except Exception as exc:
-            print("Error executing SQL: %s"%exc)
-            return jsonify({'page': 'list', 'success': False})
-
-    # Otherwise we show the questions:
-    return render_template('third_questions.html', user=USERID, trial=TRIALID, questions=QUESTIONS_TO_DISPLAY)
 
 
-
-
-# Split the questions to only provide the ones that are designed for VR or S(creen)
-# Returns a list of questions, that are marked with the trialID
-
-
-def return_questions_for_risk_aversion(questions, condition):
-    
-    questions_to_display = []
-    
-    for q in questions:
-       questions_to_display.append(q)
-    
-    print("Questions calculatd", questions_to_display)
-    return questions_to_display
-
-
-
- """
 if __name__ == "__main__":
     # write_headers()
     app.run(debug=True, host="0.0.0.0", port=1231)
