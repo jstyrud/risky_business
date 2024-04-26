@@ -20,12 +20,12 @@ assoc = ["Reliable", "Sincere", "Capable", "Ethical", "Predictable", "Genuine", 
                 "Meticulous", "Has integrity"]
 
 for i in range(len(assoc)):
-        risky_q_string = "T"+str(i)+"_R"
-        risky_q =  [risky_q_string, "radio_text", assoc[i],["1", "2", "3", "4", "5","6","7", ""], ["Not at all", "Very", "Does Not Fit"] ]
+        risky_q_string = "T_"+str(i)+"_R"
+        risky_q =  [risky_q_string, "radio_text", assoc[i],["1", "2", "3", "4", "5","6","7", "NA"], ["Not at all", "Very", "Does Not Fit"] ]
         QUESTIONS.append(risky_q)
 
-        safe_q_string = "T"+str(i)+"_S"
-        safe_q =  [safe_q_string, "radio_text", assoc[i],["1", "2", "3", "4", "5","6","7", ""], ["Not at all", "Very", "Does Not Fit"] ]
+        safe_q_string = "T_"+str(i)+"_S"
+        safe_q =  [safe_q_string, "radio_text", assoc[i],["1", "2", "3", "4", "5","6","7", "NA"], ["Not at all", "Very", "Does Not Fit"] ]
         QUESTIONS.append(safe_q)
 
 print(QUESTIONS)

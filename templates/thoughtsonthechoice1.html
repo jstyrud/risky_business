@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{% block title %}  {% endblock %}</h1>
+    <div class='message'>
+
+    <div class="center_align"><h2> Please answer the following questions.</h2></div>
+    <form method="post">
+     
+
+            <div class="radio_text">
+
+                <h2> How confident are you in your decision to choose {{choice}}?  </h2>
+                <div class="left_right_container">
+                    <div class="left_align"><h3>0</h3></div>
+                    <div class="right_align"><h3></h3> 100</div>
+                </div>
+                <!-- <h3>Not at all &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; Very</h3> -->
+                <input type="range" name="coworkercomfort" id="coworkercomfort" min="0" max="100" value="50" step="5"> 
+            </div>
+
+            <div class="radio_text">
+
+                <h2> Why did you select {{choice}}?  </h2>
+                <!-- <h3>Not at all &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; Very</h3> -->
+                <input type="text" name="coworkerreasoning" id="coworkerreasoning" > 
+            </div>
+                 
+            
+        
+    
+        <div class="center_align">
+            <button type="submit">Submit</button>
+        </div>
+    </form>
+
+    </div>
+{% endblock %}

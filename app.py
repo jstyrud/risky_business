@@ -1,7 +1,6 @@
 from flask import Flask, render_template, redirect, url_for, jsonify, request
 from datetime import datetime
-from questions import QUESTIONS, QUESTION_ORDER
-from questionsthree import QUESTIONS_C
+from questions import QUESTIONS
 import csv
 import random
 import os.path
@@ -13,6 +12,8 @@ USERID = -1
 TRIALID = ""
 TRIAL_COUNTER = 0
 TRIAL_TYPE = "risky"
+MONEY_CHOICE = ""
+MONEYID = ""
 TRIALS_COMPLETED = {"risky": False, "safe": False}
 
 ### CSV Filename:
@@ -44,10 +45,14 @@ def refine_non_failure_data(original_dict):
 
     for key, value in original_dict.items():
         if key.endswith('_R'):
+            print(key, value)
             corresponding_key = key[:-1] + 'S'
+            print(corresponding_key)
             new_value = original_dict[corresponding_key]
         elif key.endswith('_S'):
-            corresponding_key = key[:-2] + 'R'
+            print(key, value)
+            corresponding_key = key[:-1] + 'R'
+            print(corresponding_key)
             new_value = original_dict[corresponding_key]
         else:
             new_value = value
@@ -328,7 +333,7 @@ def thechoice1():
                 # TRIALID is reverted back to  the first robot they interacted with 
                 JSON_DATA["RobotChoiceCoworker"] = TRIALID
                 print(TRIALID)
-            if COWORKER_CHOICE == 'robot2':
+            elif COWORKER_CHOICE == 'robot2':
                 if TRIALID == "risky":
                     JSON_DATA["RobotChoiceCoworker"] = "safe"
                     print("safe")
@@ -338,8 +343,8 @@ def thechoice1():
                 else:
                     raise Exception("invalid TRIALID")
                 # the second robot, aka the last robot they interacted with, is still saved in the trial id 
-                
             else:
+                print(COWORKER_CHOICE)
                 raise Exception("invalid choice")
        
 
@@ -347,6 +352,7 @@ def thechoice1():
             return redirect('/thoughtsonthechoice1')
         except Exception as e:
             # In the case of an error, return to home page.
+            print(e)
             return redirect('/')
 
     return render_template('thechoice1.html', user=USERID, trial=TRIALID)
@@ -360,7 +366,36 @@ def thoughtsonthechoice1():
     global TRIALID
     global JSON_DATA
 
-    return render_template('thoughtsonthechoice1.html', user=USERID, trial=TRIALID)
+    if JSON_DATA["RobotChoiceCoworker"] == TRIALID:
+        choicemade = "Protype 1"
+    else:
+         choicemade = "Protype 2"
+
+    if request.method == 'POST':
+
+        try:
+     
+            print(request.form)
+            for v in request.form:
+                # JSON_DATA[v] = request.form[v]
+                print(v, request.form[v])
+                try:
+                    current_response = "NA" if request.form[v] == "" else request.form[v]
+                    JSON_DATA[v] = current_response
+                except Exception as exc:
+                    current_response = "NA"
+                    JSON_DATA[v] = current_response
+
+            print(JSON_DATA)
+            return redirect('/thechoice2')
+        
+        except Exception as e:
+            # In the case of an error, return to home page.
+            print(e)
+            return redirect('/')
+
+
+    return render_template('thoughtsonthechoice1.html', user=USERID, trial=TRIALID, choice = choicemade)
 
 # Page 10a the choice money
 @app.route('/thechoice2', methods=['POST', 'GET'])
@@ -368,6 +403,45 @@ def thechoice2():
     global USERID
     global TRIALID
     global JSON_DATA
+    global MONEY_CHOICE
+
+    if request.method == 'POST':
+        print('made it')
+        try:
+            # Store the user variables:
+            COWORKER_CHOICE = request.form['RobotChoiceMoney']
+
+            print(COWORKER_CHOICE)
+
+            # Store it in the JSON_DATA 
+            if COWORKER_CHOICE == 'robot1':
+                # TRIALID is reverted back to  the first robot they interacted with 
+                JSON_DATA["RobotChoiceMoney"] = TRIALID
+                MONEY_CHOICE = TRIALID
+                print(TRIALID)
+            elif COWORKER_CHOICE == 'robot2':
+                if TRIALID == "risky":
+                    JSON_DATA["RobotChoiceMoney"] = "safe"
+                    MONEY_CHOICE = "safe"
+                    print("safe")
+                elif TRIALID == "safe":
+                    JSON_DATA["RobotChoiceMoney"] = "risky"
+                    MONEY_CHOICE = "risky"
+                    print("risky")
+                else:
+                    raise Exception("invalid TRIALID")
+                # the second robot, aka the last robot they interacted with, is still saved in the trial id 
+            else:
+                print(COWORKER_CHOICE)
+                raise Exception("invalid choice")
+       
+
+            #Once the page has been submitted, it moves on to the next page - i.e consent (look for route below.)
+            return redirect('/thoughtsonthechoice2')
+        except Exception as e:
+            # In the case of an error, return to home page.
+            print(e)
+            return redirect('/')
 
     return render_template('thechoice2.html', user=USERID, trial=TRIALID)
 
@@ -377,8 +451,41 @@ def thoughtsonthechoice2():
     global USERID
     global TRIALID
     global JSON_DATA
+    global MONEY_CHOICE
 
-    return render_template('thoughtsonthechoice2.html', user=USERID, trial=TRIALID)
+
+
+
+    if MONEY_CHOICE == TRIALID:
+        choicemade = "Protype 1"
+    else:
+         choicemade = "Protype 2"
+
+    if request.method == 'POST':
+
+        try:
+     
+            print(request.form)
+            for v in request.form:
+                # JSON_DATA[v] = request.form[v]
+                print(v, request.form[v])
+                try:
+                    current_response = "NA" if request.form[v] == "" else request.form[v]
+                    JSON_DATA[v] = current_response
+                except Exception as exc:
+                    current_response = "NA"
+                    JSON_DATA[v] = current_response
+
+            print(JSON_DATA)
+            return redirect('/bell3')
+        
+        except Exception as e:
+            # In the case of an error, return to home page.
+            print(e)
+            return redirect('/')
+
+
+    return render_template('thoughtsonthechoice2.html', user=USERID, trial=TRIALID, choice = choicemade)
 
 ## Page 11 before final run ###
 
@@ -393,23 +500,76 @@ def bell3():
 
 
 ## Page 11b experiementer input ###
-@app.route('/moneyinput', methods=['GET'])
+@app.route('/moneyinput', methods=['GET', 'POST'])
 def moneyinput():
 
     global USERID
     global TRIALID
+    global MONEY_CHOICE
+    global MONEYID
+
+    
+    # When the data is returned to the page, i.e submit is sent:
+    if request.method == 'POST':
+        try:
+            # Store the user variables:
+            MONEYID = request.form['moneyID']
+
+            print(USERID, TRIALID)
+            
+            # Store it in the JSON_DATA 
+            JSON_DATA["moneyID"] = MONEYID
+
+            #Once the page has been submitted, it moves on to the next page - i.e consent (look for route below.)
+            return redirect('/reflections')
+        except Exception as e:
+            # In the case of an error, return to home page.
+            return redirect('/')
+            
+ 
 
     # If the page is called, it will generate the following html file
-    return render_template('moneyinput.html', user=USERID, trial=TRIALID)
+    return render_template('moneyinput.html', user=USERID, trial=TRIALID, money = MONEY_CHOICE)
 
 
 ## Page 12 reflections on the choice ###
 
-@app.route('/reflections', methods=['GET'])
+@app.route('/reflections', methods=['GET', 'POST'])
 def reflections():
 
     global USERID
     global TRIALID
+    global MONEY_CHOICE
+
+    if MONEY_CHOICE == TRIALID:
+        choicemade = "Protype 1"
+    else:
+        choicemade = "Protype 2"
+
+    if request.method == 'POST':
+
+        try:
+     
+            print(request.form)
+            for v in request.form:
+                # JSON_DATA[v] = request.form[v]
+                print(v, request.form[v])
+                try:
+                    current_response = "NA" if request.form[v] == "" else request.form[v]
+                    JSON_DATA[v] = current_response
+                except Exception as exc:
+                    current_response = "NA"
+                    JSON_DATA[v] = current_response
+
+            print(JSON_DATA)
+            return redirect('/final_opinions')
+        
+        except Exception as e:
+            # In the case of an error, return to home page.
+            print(e)
+            return redirect('/')
+
+
 
     # If the page is called, it will generate the following html file
     return render_template('reflections.html', user=USERID, trial=TRIALID)
@@ -458,7 +618,7 @@ def fin():
 
     file_exists = os.path.isfile(CSV_FILENAME)
 
-    if TRIALID == 'flawless':
+    if TRIALID == 'safe':
                 NON_FAILURE_DATA = refine_non_failure_data(JSON_DATA)
                 JSON_DATA = NON_FAILURE_DATA
 
