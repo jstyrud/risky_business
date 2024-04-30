@@ -8,12 +8,10 @@
         <form method="post">
             <h1>The participant chose the {{money}} robot. Please specify the condition of the final trial:</h1>
             <select name="moneyID" id="moneyID" required >
-                <optgroup>
-                <option value="" disabled selected>Select condition</option>
+                <option value="">Select condition</option>
                 <option value="risky_success">Successful robot</option>
                 <option value="risky_unsucess">Unsucessful robot</option>
                 <option value="safe">Not Applicable (safe was chosen)</option>
-            </optgroup>
               </select>
             <div class="center_align">
                 <button type="submit">Submit</button>

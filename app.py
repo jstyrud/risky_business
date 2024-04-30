@@ -19,7 +19,7 @@ TRIALS_COMPLETED = {"risky": False, "safe": False}
 # WARNING: ALL NEW QUESTION TAGS MUST BE ENTERED INTO THIS LIST TO ENSURE THAT DATA IS STORED IN THE CORRECT ORDER
 
 
-CSV_ORDERING = ["ParticipantID",  	"TrialID",	"age",	"gender",	"risk_willingess",	
+CSV_ORDERING = ["ParticipantID",  	"TrialID",	"riskyordering", "safeordering", "age",	"gender",	"risk_willingess",	
                 "T_Reliable_R",	"T_Sincere_R",	"T_Capable_R",	"T_Ethical_R",	"T_Predictable_R",	"T_Genuine_R",	"T_Skilled_R",
                     "T_Respectable_R",	"T_Count_on_R",	"T_Candid_R",	"T_Competent_R",	"T_Principled_R",	"T_Consistent_R",	
                     "T_Authentic_R",	"T_Meticulous_R",	"T_integrity_R",
@@ -84,6 +84,9 @@ def home():
             # Store it in the JSON_DATA 
             JSON_DATA["ParticipantID"] = USERID
             JSON_DATA["TrialID"] = TRIALID
+            JSON_DATA["riskyordering"] =request.form['riskyordering']
+            JSON_DATA["safeordering"] =request.form['safeordering']
+          
 
             #Once the page has been submitted, it moves on to the next page - i.e consent (look for route below.)
             return redirect('/consent')
@@ -295,10 +298,12 @@ def thechoice1():
         try:
             # Store the user variables:
             COWORKER_CHOICE = request.form['RobotChoiceCoworker']
+            print(COWORKER_CHOICE)
 
             print(COWORKER_CHOICE)
 
             # Store it in the JSON_DATA 
+            
             if COWORKER_CHOICE == 'robot1':
                 # TRIALID is reverted back to  the first robot they interacted with 
                 JSON_DATA["RobotChoiceCoworker"] = TRIALID
@@ -313,13 +318,20 @@ def thechoice1():
                 else:
                     raise Exception("invalid TRIALID")
                 # the second robot, aka the last robot they interacted with, is still saved in the trial id 
+            elif COWORKER_CHOICE == 'NA':
+                JSON_DATA["RobotChoiceCoworker"] = 'NA'
+                JSON_DATA["coworkercomfort"]='NA'
+                JSON_DATA["coworkerreasoning"]='NA'
             else:
                 print(COWORKER_CHOICE)
                 raise Exception("invalid choice")
        
 
             #Once the page has been submitted, it moves on to the next page - i.e consent (look for route below.)
-            return redirect('/thoughtsonthechoice1')
+            if COWORKER_CHOICE == 'NA':
+                return redirect('/thechoice2')
+            else:
+                return redirect('/thoughtsonthechoice1')
         except Exception as e:
             # In the case of an error, return to home page.
             print(e)
