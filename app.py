@@ -1,6 +1,6 @@
 from flask import Flask, render_template, redirect, url_for, jsonify, request
 from datetime import datetime
-from questions import QUESTIONS
+from questions import TRUST_QUESTIONS, RISK_QUESTIONS
 import csv
 import random
 import os.path
@@ -19,7 +19,8 @@ TRIALS_COMPLETED = {"risky": False, "safe": False}
 # WARNING: ALL NEW QUESTION TAGS MUST BE ENTERED INTO THIS LIST TO ENSURE THAT DATA IS STORED IN THE CORRECT ORDER
 
 
-CSV_ORDERING = ["ParticipantID",  	"TrialID",	"riskyordering", "safeordering", "age",	"gender",	"risk_willingess",	
+CSV_ORDERING = ["ParticipantID",  	"TrialID",	"riskyordering", "safeordering", "age",	"gender",
+                'risk_willingness', 'se_1', 'se_2', 'se_3', 'se_4', 'se_5', 'se_6', 'se_7', 'se_8',
                 "T_Reliable_R",	"T_Sincere_R",	"T_Capable_R",	"T_Ethical_R",	"T_Predictable_R",	"T_Genuine_R",	"T_Skilled_R",
                     "T_Respectable_R",	"T_Count_on_R",	"T_Candid_R",	"T_Competent_R",	"T_Principled_R",	"T_Consistent_R",	
                     "T_Authentic_R",	"T_Meticulous_R",	"T_integrity_R",
@@ -157,11 +158,16 @@ def demographics():
     global TRIALID
     global JSON_DATA
 
+
+    # Randomize the questions:
+    random.shuffle(RISK_QUESTIONS)
+
     # When the data is returned to the page, i.e submit is sent:
     if request.method == 'POST':
      
         print(request.form)
         for v in request.form:
+        
             # JSON_DATA[v] = request.form[v]
             print(v, request.form[v])
             try:
@@ -170,11 +176,22 @@ def demographics():
             except Exception as exc:
                 current_response = "NA"
                 JSON_DATA[v] = current_response
+            
+            for mq in RISK_QUESTIONS:
+                k = mq[0]
+                print("question " + k)
+                try:
+                    current_response = "NA" if request.form[k] == "" else request.form[k]
+                    print("req form: "+ request.form[k])
+                    JSON_DATA[k] = current_response
+                except Exception as exc:
+                    current_response = "NA"
+                    JSON_DATA[k] = current_response
 
         return redirect('/bell1')
 
     # If the page is called, it will generate the following html file
-    return render_template('demographics.html', user=USERID, trial=TRIALID)
+    return render_template('demographics.html', user=USERID, trial=TRIALID, questions=RISK_QUESTIONS)
 
 
 ## Page 4 before first trial  ##############
@@ -195,7 +212,7 @@ def showQuestions():
     
     # Calculate which questions to use, given the questions and the trial type (i.e VR):
     print("here we go   "+ TRIALID)
-    QUESTIONS_TO_DISPLAY=return_questions_for_condition(QUESTIONS, TRIALID)
+    QUESTIONS_TO_DISPLAY=return_questions_for_condition(TRUST_QUESTIONS, TRIALID)
     RANDOM_QUESTIONS = QUESTIONS_TO_DISPLAY
 
     # Randomize the questions:
@@ -220,7 +237,7 @@ def showQuestions():
             
 
         # For each question in the stack:
-        for mq in QUESTIONS:
+        for mq in TRUST_QUESTIONS:
 
             # Check again if the postfix exists for the current question, if it does store the response
             if(trial_postfix == mq[0][-2:]):

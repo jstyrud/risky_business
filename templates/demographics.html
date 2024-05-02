@@ -30,29 +30,39 @@
         
      
         
-        
-        <div class="radio_text">
-
-            <h2> Rate your willingness to take risks in general. </h2>
-            <div class="left_right_container">
-                <div class="left_align"><h3>Completely Unwilling</h3></div>
-                <div class="right_align"><h3> Willing</h3></div>
-            </div>
-            <!-- <h3>Not at all &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; Very</h3> -->
-            <input type="radio" name="risk_willingess" id="default_value" value="NA" checked></input>
-            <input type="radio" name="risk_willingess" id="risk_willingess_1" value="1" ><label for="risk_willingess_1">1</label></input>
-            <input type="radio" name="risk_willingess" id="risk_willingess_2" value="2" ><label for="risk_willingess_2">2</label></input>
-            <input type="radio" name="risk_willingess" id="risk_willingess_3" value="3" ><label for="risk_willingess_3">3</label></input>
-            <input type="radio" name="risk_willingess" id="risk_willingess_4" value="4" ><label for="risk_willingess_4">4</label></input>
-            <input type="radio" name="risk_willingess" id="risk_willingess_5" value="5" ><label for="risk_willingess_5">5</label></input>
-            <input type="radio" name="risk_willingess" id="risk_willingess_6" value="6" ><label for="risk_willingess_6">6</label></input>
-            <input type="radio" name="risk_willingess" id="risk_willingess_7" value="7" ><label for="risk_willingess_7">7</label></input>
-        </div>
-        <div class="radio_text">
-
-
-        
+        <h2> Please rate the robot using the scale from 0 (Not at all) to 7 (Very). 
+            If a particular item does not seem to fit the robot in the situation, please select the option that says "Does Not Fit." 
+             </h2>
+        <form method="post">
+        {% for message in questions %}
+            <div class="{{ message[1] }}">
+                
+                    <h2>{{ message[2] }}</h2>
     
+                    <div class="left_right_container">
+                        <!-- <h3>Not at all &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; Very</h3> -->
+                        <div class="left_align"><h3>{{ message[4][0] }}</h3></div>
+                        <div class="right_align"><h3>{{ message[4][1] }}&emsp;{{ message[4][2] }}</h3></div>
+                    </div>
+    
+                    {% for response in message[3] %}
+                        <input type="radio" id="{{ message[0] }}.{{ response }}" name="{{ message[0] }}" value="{{ response }}">
+                        
+                        <label for="{{ message[0] }}.{{ response }}">
+                            {% if message[1] == "radio_img" %}
+                            <img 
+                                src="/static/img/{{ response }}.jpg" class="cover"  />
+                            {% else %}
+                            {{ response }}
+                            {% endif %}
+    
+                        </label>
+                    {% endfor %}  
+                    <br>  
+                    
+            </div>
+        {% endfor %}
+
         <div class="center_align">
             <button type="submit">Submit</button>
         </div>

@@ -11,12 +11,19 @@
             <div class="radio_text">
 
                 <h2> How confident are you in your decision to choose {{choice}}?  </h2>
+               
                 <div class="left_right_container">
-                    <div class="left_align"><h3>0</h3></div>
-                    <div class="right_align"><h3>100</h3></div>
+                    <div class="left_align"><h3>Not Confident</h3></div>
+                    <div class="right_align"><h3> Confident</h3></div>
                 </div>
-                <!-- <h3>Not at all &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; Very</h3> -->
-                <input type="range" class="slider" name="moneycomfort" id="moneycomfort" min="0" max="100" value="50" step="5"> 
+                <input type="radio" name="moneycomfort" id="default_value" value="NA" checked></input>
+                <input type="radio" name="moneycomfort" id="moneycomfort_1" value="1" ><label for="moneycomfort_1">1</label></input>
+                <input type="radio" name="moneycomfort" id="moneycomfort_2" value="2" ><label for="moneycomfort_2">2</label></input>
+                <input type="radio" name="moneycomfort" id="moneycomfort_3" value="3" ><label for="moneycomfort_3">3</label></input>
+                <input type="radio" name="moneycomfort" id="moneycomfort_4" value="4" ><label for="moneycomfort_4">4</label></input>
+                <input type="radio" name="moneycomfort" id="moneycomfort_5" value="5" ><label for="moneycomfort_5">5</label></input>
+                <input type="radio" name="moneycomfort" id="moneycomfort_6" value="6" ><label for="moneycomfort_6">6</label></input>
+                <input type="radio" name="moneycomfort" id="moneycomfort_7" value="7" ><label for="moneycomfort_7">7</label></input>
             </div>
 
             <div class="radio_text">
@@ -30,14 +37,10 @@
 
             <div class="radio_text">
 
-                <h2> What do you think the likelihood of successfully stacking all 4 blocks with {{choice}} in this trial is?  </h2>
+                <h2> What do you think the likelihood of successfully stacking all 4 blocks with {{choice}} in this trial is? 0 means there is no chance of the robot stacking blocks, and 100 means the robot will stack 4 blocks with certainty. </h2>
                 <!-- <h3>Not at all &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; Very</h3> -->
-                <div class="left_right_container">
-                    <div class="left_align"><h3>0%</h3></div>
-                    <div class="right_align"><h3></h3> 100%</div>
-                </div>
                 <!-- <h3>Not at all &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; Very</h3> -->
-                <input type="range" class = slider name="moneylikelihood" id="moneylikelihood" min="0" max="100" value="50" step="5"> 
+                <input type="number" id="moneylikelihood" name="moneylikelihood" min="0" max="100"  autocomplete="off">
             </div>
             
         

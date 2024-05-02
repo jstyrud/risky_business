@@ -13,7 +13,7 @@
 #             ["Q15", "radio_img", "What was the robot's task", ["artichoke", "basket","sandtimer"]]
 #     ]
     
-QUESTIONS = [ ]
+TRUST_QUESTIONS = [ ]
 
 assoc = ["Reliable", "Sincere", "Capable", "Ethical", "Predictable", "Genuine", "Skilled", "Respectable", 
                 "Someone you can count on", "Candid", "Competent", "Principled", "Consistent", "Authentic",
@@ -25,31 +25,30 @@ assoc_labels =["Reliable", "Sincere", "Capable", "Ethical", "Predictable", "Genu
 for i in range(len(assoc)):
         risky_q_string = "T_"+assoc_labels[i]+"_R"
         risky_q =  [risky_q_string, "radio_text", assoc[i],["1", "2", "3", "4", "5","6","7", "*"], ["Not at all", "Very", "Does Not Fit"] ]
-        QUESTIONS.append(risky_q)
+        TRUST_QUESTIONS.append(risky_q)
 
         safe_q_string = "T_"+assoc_labels[i]+"_S"
         safe_q =  [safe_q_string, "radio_text", assoc[i],["1", "2", "3", "4", "5","6","7", "*"], ["Not at all", "Very", "Does Not Fit"] ]
-        QUESTIONS.append(safe_q)
+        TRUST_QUESTIONS.append(safe_q)
 
-print(QUESTIONS)
-# Unused, questions are randomized
-QUESTION_ORDER = {
+print(TRUST_QUESTIONS)
 
-        "E1_": 1,
-        "E2_": 2,
-        "E3_": 3,
-        "AA1_": 4,
-        "AA2_": 5,
-        "AA3_": 6,
-        "AA4_": 7,
-        "AE1_": 8,
-        "AE2_": 9,
-        "AE3_": 10,
-        "IQ1_": 11,
-        "IQ2_": 12,
-        "IQ3_": 13,
-        "P1_": 14,
-        "P2_": 15
-    
+RISK_QUESTIONS = []
 
-}
+risk_text = ["I will be able to achieve most of the goals I have set for myself.", 
+             "When facing difficult tasks, I am certain that I will accomplish them.", 
+             "In general, I think that I can obtain outcomes that are important to me.",
+             "I believe I can succeed at most any endeavor to which I set my mind.",
+             "I will be able to successfully overcome many challenges.",
+             "I am confident that I can perform effectively on many different tasks.",
+             "Compared to other people, I can do most tasks well.",
+             "Even when things are tough, I can perform quite well.",
+             "I am generally willing to take risks."]
+
+risk_labels =  ["se_"+str(i) for i in range(1,9)] + ["risk_willingness"]
+print(risk_labels)
+
+
+for i in range(len(risk_text)):
+        new_q =  [risk_labels[i], "radio_text", risk_text[i],["1", "2", "3", "4", "5","6","7", "*"], ["Not at all", "Very", "Does Not Fit"] ]
+        RISK_QUESTIONS.append(new_q)
