@@ -366,9 +366,9 @@ def thoughtsonthechoice1():
     global JSON_DATA
 
     if JSON_DATA["RobotChoiceCoworker"] == TRIALID:
-        choicemade = "Protype 1"
+        choicemade = "Prototype 1"
     else:
-         choicemade = "Protype 2"
+         choicemade = "Prototype 2"
 
     if request.method == 'POST':
 
@@ -456,9 +456,9 @@ def thoughtsonthechoice2():
 
 
     if MONEY_CHOICE == TRIALID:
-        choicemade = "Protype 1"
+        choicemade = "Prototype 1"
     else:
-         choicemade = "Protype 2"
+         choicemade = "Prototype 2"
 
     if request.method == 'POST':
 
@@ -509,9 +509,9 @@ def moneyinput():
 
 
     if MONEY_CHOICE == TRIALID:
-        choicemade = "Protype 1"
+        choicemade = "Prototype 1"
     else:
-         choicemade = "Protype 2"
+         choicemade = "Prototype 2"
     
     # When the data is returned to the page, i.e submit is sent:
     if request.method == 'POST':
@@ -533,7 +533,7 @@ def moneyinput():
  
 
     # If the page is called, it will generate the following html file
-    return render_template('moneyinput.html', user=USERID, trial=TRIALID, money = MONEY_CHOICE)
+    return render_template('moneyinput.html', user=USERID, trial=TRIALID, money = MONEY_CHOICE, choice = choicemade)
 
 
 ## Page 12 reflections on the choice ###
@@ -546,9 +546,9 @@ def reflections():
     global MONEY_CHOICE
 
     if MONEY_CHOICE == TRIALID:
-        choicemade = "Protype 1"
+        choicemade = "Prototype 1"
     else:
-        choicemade = "Protype 2"
+        choicemade = "Prototype 2"
 
     if request.method == 'POST':
 

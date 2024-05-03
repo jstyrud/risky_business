@@ -50,5 +50,5 @@ print(risk_labels)
 
 
 for i in range(len(risk_text)):
-        new_q =  [risk_labels[i], "radio_text", risk_text[i],["1", "2", "3", "4", "5","6","7", "*"], ["Not at all", "Very", "Does Not Fit"] ]
+        new_q =  [risk_labels[i], "radio_text", risk_text[i],["1", "2", "3", "4", "5","6","7"], ["Not at all", "", "Very"] ]
         RISK_QUESTIONS.append(new_q)
