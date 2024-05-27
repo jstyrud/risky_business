@@ -159,9 +159,6 @@ def demographics():
     global JSON_DATA
 
 
-    # Randomize the questions:
-    random.shuffle(RISK_QUESTIONS)
-
     # When the data is returned to the page, i.e submit is sent:
     if request.method == 'POST':
      
@@ -177,22 +174,43 @@ def demographics():
                 current_response = "NA"
                 JSON_DATA[v] = current_response
             
-            for mq in RISK_QUESTIONS:
-                k = mq[0]
-                print("question " + k)
-                try:
-                    current_response = "NA" if request.form[k] == "" else request.form[k]
-                    print("req form: "+ request.form[k])
-                    JSON_DATA[k] = current_response
-                except Exception as exc:
-                    current_response = "NA"
-                    JSON_DATA[k] = current_response
+
+        return redirect('/personalquestionaire')
+
+    # If the page is called, it will generate the following html file
+    return render_template('demographics.html', user=USERID, trial=TRIALID)
+
+
+## Page 3.5 risks  ##############
+@app.route('/personalquestionaire', methods=['POST', 'GET'])
+def personalquestionaire():
+
+    global USERID
+    global TRIALID
+    global JSON_DATA
+
+
+    # Randomize the questions:
+    random.shuffle(RISK_QUESTIONS)
+
+    # When the data is returned to the page, i.e submit is sent:
+    if request.method == 'POST':
+
+        for mq in RISK_QUESTIONS:
+            k = mq[0]
+            print("question " + k)
+            try:
+                current_response = "NA" if request.form[k] == "" else request.form[k]
+                print("req form: "+ request.form[k])
+                JSON_DATA[k] = current_response
+            except Exception as exc:
+                current_response = "NA"
+                JSON_DATA[k] = current_response
 
         return redirect('/bell1')
 
     # If the page is called, it will generate the following html file
-    return render_template('demographics.html', user=USERID, trial=TRIALID, questions=RISK_QUESTIONS)
-
+    return render_template('personalquestionaire.html', user=USERID, trial=TRIALID, questions=RISK_QUESTIONS)
 
 ## Page 4 before first trial  ##############
 @app.route('/bell1', methods=['GET'])
@@ -217,6 +235,11 @@ def showQuestions():
 
     # Randomize the questions:
     random.shuffle(RANDOM_QUESTIONS)
+
+    if  (not TRIALS_COMPLETED["risky"]) and (not TRIALS_COMPLETED["safe"]):
+        prototype = "Prototype 1"
+    else:
+        prototype = "Prototype 2"
 
     # Check if data is coming back from the form:
     if request.method == 'POST':
@@ -278,7 +301,7 @@ def showQuestions():
             if(TRIALS_COMPLETED["risky"] == True and TRIALS_COMPLETED["safe"] == True):
                 
 
-                return redirect('/thechoice1')
+                return redirect('/secondstage')
 
             # Once they have completed, go to the bell page to wait until the next task is completed
             return render_template('bell2.html', user=USERID, trial=TRIALID)
@@ -287,7 +310,7 @@ def showQuestions():
             return jsonify({'page': 'list', 'success': False})
             
     # Otherwise we show the questions:
-    return render_template('trial_questions.html', user=USERID, trial=TRIALID, questions=QUESTIONS_TO_DISPLAY)
+    return render_template('trial_questions.html', user=USERID, trial=TRIALID, questions=QUESTIONS_TO_DISPLAY, prototype=prototype)
 
 
 ## Page 6  for between trials ###
@@ -301,7 +324,15 @@ def bell2():
     # If the page is called, it will generate the following html file
     return render_template('bell2.html', user=USERID, trial=TRIALID)
 
-################################ TO DO ##################
+@app.route('/secondstage', methods=['GET'])
+def secondstage():
+
+    global USERID
+    global TRIALID
+
+    # If the page is called, it will generate the following html file
+    return render_template('secondstage.html', user=USERID, trial=TRIALID)
+
 
 # Page 9a the choice coworker
 @app.route('/thechoice1', methods=['POST', 'GET'])

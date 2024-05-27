@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{% block title %}  {% endblock %}</h1>
+    <div class='message'>
+
+     
+        
+        <h2> Please answer the following question: 
+             </h2>
+        <form method="post">
+        {% for message in questions %}
+            <div class="{{ message[1] }}">
+                
+                    <h2>{{ message[2] }}</h2>
+    
+                    <div class="left_right_container">
+                        <!-- <h3>Not at all &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; Very</h3> -->
+                        <div class="left_align"><h3>{{ message[4][0] }}</h3></div>
+                        <div class="right_align"><h3>{{ message[4][1] }}&emsp;{{ message[4][2] }}</h3></div>
+                    </div>
+    
+                    {% for response in message[3] %}
+                        <input type="radio" id="{{ message[0] }}.{{ response }}" name="{{ message[0] }}" value="{{ response }}">
+                        
+                        <label for="{{ message[0] }}.{{ response }}">
+                            {% if message[1] == "radio_img" %}
+                            <img 
+                                src="/static/img/{{ response }}.jpg" class="cover"  />
+                            {% else %}
+                            {{ response }}
+                            {% endif %}
+    
+                        </label>
+                    {% endfor %}  
+                    <br>  
+                    
+            </div>
+        {% endfor %}
+
+        <div class="center_align">
+            <button type="submit">Submit</button>
+        </div>
+    </form>
+
+    </div>
+{% endblock %}
