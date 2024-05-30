@@ -29,7 +29,7 @@ CSV_ORDERING = ["ParticipantID",  	"TrialID",	"riskyordering", "safeordering", "
                     "T_Authentic_S",	"T_Meticulous_S",	"T_integrity_S",
                 "RobotChoiceCoworker",	"coworkercomfort",	"coworkerreasoning",	
                 "RobotChoiceMoney",	"moneycomfort",	"moneyreasoning",	"moneylikelihood",	
-                "moneyID",	"moneysatisfaction",	"moneyredo",	"final_feedback"
+                "moneyID",	"moneyCondition", "moneysatisfaction",	"moneyredo",	"final_feedback"
                 ]
 
 
@@ -549,11 +549,14 @@ def moneyinput():
         try:
             # Store the user variables:
             MONEYID = request.form['moneyID']
+            MONEYCONDITION = request.form['moneyCondition']
 
             print(USERID, TRIALID)
             
             # Store it in the JSON_DATA 
             JSON_DATA["moneyID"] = MONEYID
+
+            JSON_DATA["moneyCondition"]=MONEYCONDITION
 
             #Once the page has been submitted, it moves on to the next page - i.e consent (look for route below.)
             return redirect('/reflections')
