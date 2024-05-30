@@ -1,5 +1,6 @@
 participants.csv
 survey_results.csv
+old_results/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
