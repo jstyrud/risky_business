@@ -10,6 +10,7 @@ app = Flask(__name__)
 
 USERID = -1
 TRIALID = ""
+EXPCOND = ""
 TRIAL_COUNTER = 0
 TRIAL_TYPE = "risky"
 MONEY_CHOICE = ""
@@ -19,7 +20,7 @@ TRIALS_COMPLETED = {"risky": False, "safe": False}
 # WARNING: ALL NEW QUESTION TAGS MUST BE ENTERED INTO THIS LIST TO ENSURE THAT DATA IS STORED IN THE CORRECT ORDER
 
 
-CSV_ORDERING = ["ParticipantID",  	"TrialID",	"riskyordering", "safeordering", "age",	"gender",
+CSV_ORDERING = ["ParticipantID", "ExpectationCond", "TrialID",	"riskyordering", "safeordering", "age",	"gender",
                 'risk_willingness', 'se_1', 'se_2', 'se_3', 'se_4', 'se_5', 'se_6', 'se_7', 'se_8',
                 "T_Reliable_R",	"T_Sincere_R",	"T_Capable_R",	"T_Ethical_R",	"T_Predictable_R",	"T_Genuine_R",	"T_Skilled_R",
                     "T_Respectable_R",	"T_Count_on_R",	"T_Candid_R",	"T_Competent_R",	"T_Principled_R",	"T_Consistent_R",	
@@ -79,11 +80,13 @@ def home():
             # Store the user variables:
             USERID = int(request.form['paricipantID'])
             TRIALID = request.form['trialID']
+            EXPCOND = request.form["expectationCond"]
 
             print(USERID, TRIALID)
 
             # Store it in the JSON_DATA 
             JSON_DATA["ParticipantID"] = USERID
+            JSON_DATA["ExpectationCond"] = EXPCOND
             JSON_DATA["TrialID"] = TRIALID
             JSON_DATA["riskyordering"] =request.form['riskyordering']
             JSON_DATA["safeordering"] =request.form['safeordering']
