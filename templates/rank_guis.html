@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{% block title %}  {% endblock %}</h1>
+    <div class='message'>
+
+    <div class="center_align"><h2> Please rank the GUIs you tested from 1 (most preferred) to 3 (least preferred).</h2></div>
+    <form method="post">
+
+        <div class="radio_text">
+            <h2> GUI 1: </h2>
+            <input type="number" name="gui_1" min="1" max="3"  autocomplete="off">
+        </div>
+
+        <div class="radio_text">
+            <h2> GUI 2 </h2>
+            <input type="number" name="gui_2" min="1" max="3"  autocomplete="off">
+        </div>
+
+        <div class="radio_text">
+            <h2> GUI 3: </h2>
+            <input type="number" name="gui_3" min="1" max="3"  autocomplete="off">
+        </div>
+        
+     
+        <div class="center_align">
+            <button type="submit">Submit</button>
+        </div>
+    </form>
+
+    </div>
+{% endblock %}

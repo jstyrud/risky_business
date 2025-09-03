@@ -7,26 +7,7 @@
 
         <form method="post">
             <h1>Participant ID: </h1>
-            <input type="number" id="paricipantID" name="paricipantID" min="0" max="999"  required><br>
-            
-            <h1>Expectation Condition: </h1>
-            <select name="expectationCond" id="ExpectationCond" required >
-              <option value="">Select condition</option>
-              <option value="Exp1">3: high expected value</option>
-              <option value="Exp3">1: low expected value</option>
-            </select>
-
-            <h1>Trial ID: </h1>
-            <select name="trialID" id="trialID" required >
-                <option value="">Select condition</option>
-                <option value="risky">Risky robot first</option>
-                <option value="safe">Safe robot first</option>
-              </select>
-
-            <h1>Random risky trial ordering assignment (e.g., BADC): </h1>
-              <input type="text" id="riskyordering" name="riskyordering"   required><br>
-            <h1>Random safe trial ordering assignment (e.g., HGFE): </h1>
-              <input type="text" id="safeordering" name="safeordering"   required><br>
+            <input type="number" id="participantID" name="participantID" min="0" max="999"  required><br>
          
             <div class="center_align">
                 <button type="submit">Submit</button>
