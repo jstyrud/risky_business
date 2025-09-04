@@ -7,12 +7,11 @@ from flask import Flask, render_template, redirect, request
 app = Flask(__name__)
 
 USERID = -1
-VARIANTID = -1
 EXPERIMENTS_COMPLETED = 0
 # WARNING: ALL NEW QUESTION TAGS MUST BE ENTERED INTO THIS LIST TO ENSURE THAT DATA IS STORED IN THE CORRECT ORDER
 #TODO update this
 
-CSV_ORDERING = ["ParticipantID", "VariantID", "age", "gender",
+CSV_ORDERING = ["ParticipantID", "VariantID1", "VariantID2", "VariantID3", "TaskID1", "TaskID2", "TaskID3", "age", "gender",
                 'fam_1', 'fam_2', 'fam_3', 'fam_4', 'fam_5', 'fam_6', 'fam_7', 'fam_8', 'fam_9', 'fam_10', 'fam_11', 'fam_12',
                 'sus_1_1', 'sus_1_2', 'sus_1_3', 'sus_1_4', 'sus_1_5', 'sus_1_6', 'sus_1_7', 'sus_1_8', 'sus_1_9', 'sus_1_10',
                 'sus_2_1', 'sus_2_2', 'sus_2_3', 'sus_2_4', 'sus_2_5', 'sus_2_6', 'sus_2_7', 'sus_2_8', 'sus_2_9', 'sus_2_10',
@@ -27,8 +26,8 @@ JSON_DATA = {}
 #CSV filename for consent data, which should be kept separate
 CONSENT_FILENAME = 'participants.csv'
 
-def get_variant_id_from_user_id(user_id):
-    """ Returns variant id from user id """
+def get_variant_seq_from_user_id(user_id):
+    """ Returns variant sequence number from user id """
     if user_id <= 24:
         return user_id
     elif user_id <= 48:
@@ -61,6 +60,53 @@ def get_variant_id_from_user_id(user_id):
         print("ERROR, user_id not found")
         raise Exception("user_id not found")
 
+def get_variant_id(variant_seq, experiment: int) -> str:
+    """Get the variant from the experiment id."""
+    full_list = [[1, 3, 2], #1
+                 [1, 4, 2], #2
+                 [1, 5, 2], #3
+                 [1, 6, 2], #4
+                 [1, 2, 3], #5
+                 [1, 2, 4], #6
+                 [1, 2, 5], #7
+                 [1, 2, 6], #8
+                 [3, 1, 2], #9
+                 [4, 1, 2], #10
+                 [5, 1, 2], #11
+                 [6, 1, 2], #12
+                 [3, 2, 1], #13
+                 [4, 2, 1], #14
+                 [5, 2, 1], #15
+                 [6, 2, 1], #16
+                 [2, 3, 1], #17
+                 [2, 4, 1], #18
+                 [2, 5, 1], #19
+                 [2, 6, 1], #20
+                 [2, 1, 3], #21
+                 [2, 1, 4], #22
+                 [2, 1, 5], #23
+                 [2, 1, 6], #24
+                 ]
+
+    return full_list[variant_seq - 1][experiment - 1]
+
+def get_task_id(user_id: int, experiment: int):
+    """Get the task id from the user id and experiment."""
+    task_order_ids = [1, 6, 4, 4, 5, 4, 2, 6, 1, 2, 6, 3, 1, 6, 6, 3,
+                      6, 1, 2, 1, 4, 2, 6, 2, 4, 5, 3, 3, 1, 6, 5, 5,
+                      5, 5, 2, 5, 3, 2, 5, 1, 1, 3, 6, 2, 5, 5, 1, 6,
+                      3, 4, 4, 4, 1, 3, 3, 2, 4, 4, 3, 2]
+
+    task_order_id = task_order_ids[user_id - 1]
+
+    task_list = [[1, 2, 3],
+                 [1, 3, 2],
+                 [2, 1, 3],
+                 [2, 3, 1],
+                 [3, 2, 1],
+                 [3, 1, 2]]
+    return task_list[task_order_id - 1][experiment - 1]
+
 ######################
 # Routes
 ######################
@@ -70,7 +116,6 @@ def get_variant_id_from_user_id(user_id):
 def home():
     """ Start page for entering user id """
     global USERID
-    global VARIANTID
     global JSON_DATA
 
     # This clears the global variables whenever anyone goes to the home page
@@ -82,13 +127,15 @@ def home():
         try:
             # Store the user variables:
             USERID = int(request.form['participantID'])
-            VARIANTID = get_variant_id_from_user_id(USERID)
-
-            print(USERID, VARIANTID)
-
+            variant_seq = get_variant_seq_from_user_id(USERID)
+            print(USERID)
             # Store it in the JSON_DATA
             JSON_DATA["ParticipantID"] = USERID
-            JSON_DATA["VariantID"] = VARIANTID
+            for exp in range(1, 4):
+                variant_id = get_variant_id(variant_seq, exp)
+                task_id = get_task_id(USERID, exp)
+                JSON_DATA[f"VariantID{exp}"] = variant_id
+                JSON_DATA[f"TaskID{exp}"] = task_id
 
             #Once the page has been submitted, it moves on to the next page - i.e consent (look for route below.)
             return redirect('/consent')
@@ -131,7 +178,7 @@ def consent():
         return redirect('/demographics')
 
     # If the page is called, it will generate the following html file
-    return render_template('consent.html', user=USERID, trial=VARIANTID)
+    return render_template('consent.html', user=USERID)
 
 ## Page nonconsent ####################
 @app.route('/nonconsent', methods=['POST', 'GET'])
@@ -161,7 +208,7 @@ def demographics():
         return redirect('/personalquestionaire')
 
     # If the page is called, it will generate the following html file
-    return render_template('demographics.html', user=USERID, trial=VARIANTID)
+    return render_template('demographics.html', user=USERID)
 
 
 ## Page familiarity  ##############
@@ -205,12 +252,12 @@ def personalquestionaire():
         return redirect('/bell1')
 
     # If the page is called, it will generate the following html file
-    return render_template('personalquestionaire.html', user=USERID, trial=VARIANTID, questions=familiarity_questions)
+    return render_template('personalquestionaire.html', user=USERID, questions=familiarity_questions)
 
 @app.route('/bell1', methods=['GET'])
 def bell1():
     """ Just a stop in survey before first experiment """
-    return render_template('bell1.html', user=USERID, trial=VARIANTID)
+    return render_template('bell1.html', user=USERID)
 
 @app.route('/sus', methods=['POST', 'GET'])
 def sus():
@@ -257,18 +304,18 @@ def sus():
             return redirect('/rank_guis')
 
     # If the page is called, it will generate the following html file
-    return render_template('sus.html', user=USERID, trial=VARIANTID, questions=sus_questions)
+    return render_template('sus.html', user=USERID, questions=sus_questions)
 
 
 @app.route('/bell2', methods=['GET'])
 def bell2():
     """ Just a stop in survey before second experiment """
-    return render_template('bell2.html', user=USERID, trial=VARIANTID)
+    return render_template('bell2.html', user=USERID)
 
 @app.route('/bell3', methods=['GET'])
 def bell3():
     """ Just a stop in survey before third and final experiment """
-    return render_template('bell3.html', user=USERID, trial=VARIANTID)
+    return render_template('bell3.html', user=USERID)
 
 @app.route('/rank_guis', methods=['POST', 'GET'])
 def rank_guis():
@@ -288,7 +335,7 @@ def rank_guis():
         return redirect('/final_opinions')
 
     # If the page is called, it will generate the following html file
-    return render_template('rank_guis.html', user=USERID, trial=VARIANTID)
+    return render_template('rank_guis.html', user=USERID)
 
 @app.route('/final_opinions', methods=['POST', 'GET'])
 def final_opinions():
@@ -310,7 +357,7 @@ def final_opinions():
         return redirect('/fin')
 
     # If the page is called, it will generate the following html file
-    return render_template('final_opinions.html', user=USERID, trial=VARIANTID)
+    return render_template('final_opinions.html', user=USERID)
 
 
 ## page 14 Fin ####################
@@ -347,7 +394,7 @@ def fin():
         return redirect('/')
 
     # If the page is called, it will generate the following html file
-    return render_template('fin.html', user=USERID, trial=VARIANTID)
+    return render_template('fin.html', user=USERID)
 
 
 if __name__ == "__main__":
