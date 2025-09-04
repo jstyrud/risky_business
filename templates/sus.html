@@ -21,7 +21,7 @@
                     </div>
     
                     {% for response in message[3] %}
-                        <input type="radio" id="{{ message[0] }}.{{ response }}" name="{{ message[0] }}" value="{{ response }}">
+                        <input type="radio" id="{{ message[0] }}.{{ response }}" name="{{ message[0] }}" value="{{ response }}" required>
                         
                         <label for="{{ message[0] }}.{{ response }}">
                             {% if message[1] == "radio_img" %}
