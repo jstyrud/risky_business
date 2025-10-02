@@ -217,16 +217,16 @@ def personalquestionaire():
     """ Asks some questions about the user familiarity with subjects """
     familiarity_questions = []
 
-    familiarity_text = ["How familiar are you with GUIs in general? (1=not at all, 5=very)",
-                        "How often do you use GUIs? (1=never, 5=often)",
-                        "How would you rate your level of expertise with GUIs? (1=novice, 5=expert)",
+    familiarity_text = ["How familiar are you with robot programming? (1=not at all, 5=very)",
+                        "How often do you program robots? (1=never, 5=often)",
+                        "How would you rate your level of expertise with robot programming? (1=novice, 5=expert)",
                         "How familiar are you with programming in general? (1=not at all, 5=very)",
                         "How often do you program? (anything, not necessarily robots) (1=never, 5=often)",
                         "How would you rate your level of expertise with programming? (1=novice, 5=expert)",
                         "How familiar are you with robotics in general? (1=not at all, 5=very)",
                         "How often do you use robots? (1=never, 5=often)",
                         "How would you rate your level of expertise with robotics? (1=novice, 5=expert)",
-                        "How familiar are you with Behavior Trees in general? (1=not at all, 5=very)",
+                        "How familiar are you with Behavior Trees? (1=not at all, 5=very)",
                         "How often do you use Behavior Trees? (1=never, 5=often)",
                         "How would you rate your level of expertise with Behavior Trees? (1=novice, 5=expert)"]
 
