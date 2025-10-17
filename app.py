@@ -12,7 +12,7 @@ EXPERIMENTS_COMPLETED = 0
 #TODO update this
 
 CSV_ORDERING = ["ParticipantID", "VariantID1", "VariantID2", "VariantID3", "TaskID1", "TaskID2", "TaskID3", "age", "gender",
-                'fam_1', 'fam_2', 'fam_3', 'fam_4', 'fam_5', 'fam_6', 'fam_7', 'fam_8', 'fam_9', 'fam_10', 'fam_11', 'fam_12',
+                'fam_robpro', 'oft_robpro', 'exp_robpro', 'fam_pro', 'oft_pro', 'exp_pro', 'fam_robots', 'oft_robots', 'exp_robots', 'fam_bt', 'oft_bt', 'exp_bt',
                 'sus_1_1', 'sus_1_2', 'sus_1_3', 'sus_1_4', 'sus_1_5', 'sus_1_6', 'sus_1_7', 'sus_1_8', 'sus_1_9', 'sus_1_10',
                 'sus_2_1', 'sus_2_2', 'sus_2_3', 'sus_2_4', 'sus_2_5', 'sus_2_6', 'sus_2_7', 'sus_2_8', 'sus_2_9', 'sus_2_10',
                 'sus_3_1', 'sus_3_2', 'sus_3_3', 'sus_3_4', 'sus_3_5', 'sus_3_6', 'sus_3_7', 'sus_3_8', 'sus_3_9', 'sus_3_10',
