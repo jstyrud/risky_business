@@ -231,7 +231,7 @@ def personalquestionaire():
                         "How often do you use Behavior Trees? (1=never, 5=often)",
                         "How would you rate your level of expertise with Behavior Trees? (1=novice, 5=expert)"]
 
-    familiarity_labels =  ["fam_"+str(i) for i in range(1,13)]
+    familiarity_labels =  ['fam_robpro', 'oft_robpro', 'exp_robpro', 'fam_pro', 'oft_pro', 'exp_pro', 'fam_robots', 'oft_robots', 'exp_robots', 'fam_bt', 'oft_bt', 'exp_bt']
 
     for i in range(len(familiarity_text)): #pylint: disable=consider-using-enumerate
         new_q =  [familiarity_labels[i], "radio_text", familiarity_text[i],["1", "2", "3", "4", "5"], ["", "", ""] ]
