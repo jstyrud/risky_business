@@ -150,7 +150,7 @@ def home():
 @app.route('/consent', methods=['POST', 'GET'])
 def consent():
     """ Check if user consents """
-
+    global EXPERIMENTS_COMPLETED
     # When the data is returned to the page, i.e submit is sent:
     if request.method == 'POST':
         CONSENT_DATA = {"ParticipantID": USERID}
@@ -175,6 +175,7 @@ def consent():
 
         if CONSENT_DATA["consent_1"] == "No" or CONSENT_DATA["consent_2"] == "No" or CONSENT_DATA["consent_3"] == "No":
             return redirect('/nonconsent')
+        EXPERIMENTS_COMPLETED  = 0 # reset experiment count
         return redirect('/demographics')
 
     # If the page is called, it will generate the following html file
